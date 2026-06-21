@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Экономика — Аудиолекции</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ground:       #F7FAF6;
+      --text:         #111C10;
+      --text-muted:   #576654;
+      --border:       rgba(17,28,16,0.09);
+      --accent:       #D9920F;
+      --accent-glow:  rgba(217,146,15,0.13);
+      --accent-2:     #41944A;
+      --sb-bg:        #0B1D0D;
+      --sb-text:      #A8C4A0;
+      --sb-hover:     rgba(168,196,160,0.07);
+      --sb-active-bg: rgba(217,146,15,0.11);
+      --sb-active:    #D9920F;
+      --player-bg:    #EBF0EA;
+      --sidebar-w:    272px;
+    }
+
+    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.6; }
+    body { background: var(--sb-bg); color: var(--text); overflow: hidden; }
+
+    /* ── SHELL ──────────────────────────────────────── */
+    .app { display: flex; height: 100vh; }
+
+    /* ── SIDEBAR ────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w); min-width: var(--sidebar-w);
+      background: var(--sb-bg);
+      display: flex; flex-direction: column; height: 100vh;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      position: relative; z-index: 10;
+    }
+    .sb-head { padding: 30px 22px 22px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
+    .sb-eyebrow { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 7px; display: block; font-style: italic; }
+    .sb-title { font-family: Georgia, "Times New Roman", serif; font-size: 20px; font-weight: normal; color: #E0EAD8; letter-spacing: -0.01em; line-height: 1.25; }
+    .sb-count { margin-top: 8px; font-size: 11px; color: rgba(168,196,160,0.45); letter-spacing: 0.04em; }
+
+    .sb-nav { flex: 1; overflow-y: auto; padding: 10px 0 28px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.08) transparent; }
+    .sb-nav::-webkit-scrollbar { width: 3px; }
+    .sb-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+
+    .topic-btn { width: 100%; display: flex; align-items: center; gap: 9px; padding: 9px 22px; background: none; border: none; cursor: pointer; color: var(--sb-text); font-family: inherit; font-size: 13px; font-weight: 500; text-align: left; transition: background 0.15s, color 0.15s; }
+    .topic-btn:hover { background: var(--sb-hover); color: #C8DEC0; }
+    .topic-btn.open  { color: #C8DEC0; }
+    .topic-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+    .topic-label { flex: 1; }
+    .topic-chevron { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.4; transition: transform 0.2s ease; }
+    .topic-btn.open .topic-chevron { transform: rotate(90deg); }
+
+    .lessons-list { display: none; list-style: none; padding: 2px 0 4px; }
+    .lessons-list.open { display: block; }
+
+    .lesson-btn { width: 100%; display: flex; align-items: flex-start; gap: 9px; padding: 7px 22px 7px 48px; background: none; border: none; cursor: pointer; color: rgba(168,196,160,0.6); font-family: inherit; font-size: 13px; text-align: left; line-height: 1.4; transition: background 0.15s, color 0.15s; }
+    .lesson-btn:hover { background: var(--sb-hover); color: var(--sb-text); }
+    .lesson-btn.active { color: var(--sb-active); background: var(--sb-active-bg); }
+    .lesson-num { font-size: 10px; font-family: "SF Mono", Consolas, monospace; opacity: 0.45; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── CONTENT ────────────────────────────────────── */
+    .content { flex: 1; background: var(--ground); overflow-y: auto; height: 100vh; }
+    .content-inner { max-width: 700px; margin: 0 auto; padding: 60px 48px 80px; }
+
+    /* ── WELCOME ────────────────────────────────────── */
+    .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 65vh; text-align: center; gap: 0; }
+    .welcome.hidden { display: none; }
+    .welcome-canvas { width: 100%; max-width: 480px; height: 64px; display: block; margin-bottom: 28px; }
+    .welcome-title { font-family: Georgia, "Times New Roman", serif; font-size: 26px; font-weight: normal; color: var(--text); letter-spacing: -0.02em; line-height: 1.3; margin-bottom: 10px; }
+    .welcome-sub { font-size: 14px; color: var(--text-muted); max-width: 320px; line-height: 1.6; }
+    .welcome-stats { margin-top: 32px; display: flex; gap: 32px; justify-content: center; }
+    .stat { text-align: center; }
+    .stat-num { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 28px; color: var(--text); line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+
+    /* ── LESSON ─────────────────────────────────────── */
+    .lesson-view { display: none; }
+    .lesson-view.visible { display: block; }
+    .breadcrumb { font-size: 11px; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 7px; }
+    .bc-sep { opacity: 0.35; }
+    .lesson-title { font-family: Georgia, "Times New Roman", serif; font-size: 28px; font-weight: normal; color: var(--text); letter-spacing: -0.02em; line-height: 1.3; margin-bottom: 32px; }
+
+    /* ── PLAYER ─────────────────────────────────────── */
+    .player-wrap { background: var(--player-bg); border-radius: 14px; padding: 22px 26px 24px; margin-bottom: 24px; border: 1px solid rgba(17,28,16,0.06); }
+
+    .player-status { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(87,102,84,0.4); transition: background 0.3s; flex-shrink: 0; }
+    .status-dot.playing { background: var(--accent-2); }
+    .status-dot.missing { background: #C07070; }
+
+    .wave-canvas { width: 100%; height: 52px; display: block; margin-bottom: 18px; border-radius: 4px; }
+
+    audio { display: none; }
+
+    /* voice + speed row — only shown in TTS mode */
+    .tts-controls {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .tts-controls.show { display: flex; }
+
+    .ctrl-label { font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+
+    .ctrl-select {
+      flex: 1;
+      min-width: 0;
+      background: rgba(17,28,16,0.06);
+      border: 1px solid rgba(17,28,16,0.12);
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      color: var(--text);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23576654' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+    .ctrl-select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    .speed-select { flex: 0 0 80px; }
+
+    .player-row { display: flex; align-items: center; gap: 14px; }
+
+    .play-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--text); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.18s, transform 0.1s; }
+    .play-btn:hover { background: #1E3A1C; }
+    .play-btn:active { transform: scale(0.93); }
+    .play-btn svg { fill: white; }
+
+    .progress-col { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+    .progress-track { width: 100%; height: 3px; background: rgba(17,28,16,0.13); border-radius: 2px; cursor: pointer; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.15s linear; }
+    .time-row { display: flex; justify-content: space-between; font-size: 10px; font-family: "SF Mono", Consolas, monospace; color: var(--text-muted); letter-spacing: 0.04em; }
+
+    .vol-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; display: flex; align-items: center; flex-shrink: 0; transition: color 0.15s; }
+    .vol-btn:hover { color: var(--text); }
+    .vol-btn.muted { color: #C07070; }
+
+    /* ── LESSON TEXT AREA ───────────────────────────── */
+    .text-wrap {
+      display: none;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      max-height: 340px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(17,28,16,0.1) transparent;
+    }
+    .text-wrap::-webkit-scrollbar { width: 4px; }
+    .text-wrap::-webkit-scrollbar-thumb { background: rgba(17,28,16,0.1); border-radius: 2px; }
+    .text-wrap.show { display: block; }
+
+    .text-body {
+      font-size: 15px;
+      line-height: 1.85;
+      color: var(--text);
+    }
+
+    /* word highlighted during TTS */
+    .text-body .w {
+      display: inline;
+      border-radius: 3px;
+      padding: 1px 0;
+      transition: background 0.1s, color 0.1s;
+    }
+    .text-body .w.hi {
+      background: rgba(217,146,15,0.25);
+      color: #7A4F00;
+    }
+
+    /* ── HINT BOX ───────────────────────────────────── */
+    .hint-box {
+      display: none;
+      background: rgba(217,146,15,0.07);
+      border: 1px solid rgba(217,146,15,0.22);
+      border-radius: 9px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #7A5C10;
+      margin-bottom: 28px;
+      line-height: 1.65;
+    }
+    .hint-box.show { display: block; }
+    .hint-box code { font-family: "SF Mono", Consolas, monospace; font-size: 12px; background: rgba(217,146,15,0.12); padding: 1px 5px; border-radius: 3px; }
+
+    /* ── LESSON DESCRIPTION ─────────────────────────── */
+    .lesson-desc { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 36px; padding-left: 20px; border-left: 2px solid var(--accent); }
+
+    /* ── NAVIGATION ─────────────────────────────────── */
+    .lesson-nav { display: flex; gap: 12px; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .nav-btn { flex: 1; padding: 13px 18px; background: transparent; border: 1px solid var(--border); border-radius: 9px; cursor: pointer; font-family: inherit; font-size: 13px; color: var(--text-muted); transition: border-color 0.18s, color 0.18s, background 0.18s; display: flex; flex-direction: column; gap: 4px; text-align: left; }
+    .nav-btn.right { text-align: right; }
+    .nav-btn:hover { border-color: var(--accent); color: var(--text); background: var(--accent-glow); }
+    .nav-dir { font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+    .nav-label { line-height: 1.4; }
+
+    /* ── MOBILE ──────────────────────────────────────── */
+    .hamburger { display: none; position: fixed; top: 14px; left: 14px; z-index: 100; background: var(--sb-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 9px 10px; cursor: pointer; flex-direction: column; gap: 4px; }
+    .hamburger span { display: block; width: 17px; height: 2px; background: var(--sb-text); border-radius: 1px; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 40; }
+    .overlay.on { display: block; }
+
+    @media (max-width: 680px) {
+      .hamburger { display: flex; }
+      .sidebar { position: fixed; top: 0; left: 0; bottom: 0; transform: translateX(-100%); transition: transform 0.24s ease; z-index: 50; }
+      .sidebar.open { transform: translateX(0); }
+      .content-inner { padding: 60px 22px 64px; }
+      .lesson-title { font-size: 22px; }
+      .text-wrap { max-height: 260px; }
+    }
+
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<button class="hamburger" id="hbg" aria-label="Меню">
+  <span></span><span></span><span></span>
+</button>
+<div class="overlay" id="overlay"></div>
+
+<div class="app">
+
+  <!-- ── SIDEBAR ──────────────────────────────── -->
+  <nav class="sidebar" id="sidebar" aria-label="Содержание курса">
+    <div class="sb-head">
+      <span class="sb-eyebrow">Курс лекций</span>
+      <div class="sb-title">Экономика</div>
+      <div class="sb-count" id="sbCount"></div>
+    </div>
+    <div class="sb-nav" id="sbNav"></div>
+  </nav>
+
+  <!-- ── CONTENT ──────────────────────────────── -->
+  <main class="content" id="main">
+    <div class="content-inner">
+
+      <div class="welcome" id="welcome">
+        <canvas class="welcome-canvas" id="wlcCanvas"></canvas>
+        <h1 class="welcome-title">Аудиолекции<br>по экономике</h1>
+        <p class="welcome-sub">Выберите тему в меню слева, чтобы перейти к лекции</p>
+        <div class="welcome-stats" id="wlcStats"></div>
+      </div>
+
+      <div class="lesson-view" id="lessonView">
+        <div class="breadcrumb">
+          <span id="bcTopic"></span>
+          <span class="bc-sep">›</span>
+          <span id="bcLesson"></span>
+        </div>
+
+        <h1 class="lesson-title" id="lessonTitle"></h1>
+
+        <!-- Player -->
+        <div class="player-wrap">
+          <div class="player-status">
+            <span class="status-dot" id="dot"></span>
+            <span id="statusTxt">Готов к воспроизведению</span>
+          </div>
+
+          <canvas class="wave-canvas" id="waveCanvas"></canvas>
+          <audio id="audio" preload="none"></audio>
+
+          <!-- TTS controls (voice + speed) -->
+          <div class="tts-controls" id="ttsControls">
+            <span class="ctrl-label">Голос</span>
+            <select class="ctrl-select" id="voiceSel" aria-label="Выбор голоса"></select>
+            <span class="ctrl-label">Скорость</span>
+            <select class="ctrl-select speed-select" id="speedSel" aria-label="Скорость речи">
+              <option value="0.7">0.7×</option>
+              <option value="0.85">0.85×</option>
+              <option value="1" selected>1×</option>
+              <option value="1.2">1.2×</option>
+              <option value="1.5">1.5×</option>
+            </select>
+          </div>
+
+          <div class="player-row">
+            <button class="play-btn" id="playBtn" aria-label="Воспроизвести / пауза">
+              <svg width="16" height="16" viewBox="0 0 16 16" id="playIcon">
+                <path d="M4 2.5L13 8L4 13.5V2.5Z"/>
+              </svg>
+            </button>
+            <div class="progress-col">
+              <div class="progress-track" id="progTrack">
+                <div class="progress-fill" id="progFill"></div>
+              </div>
+              <div class="time-row">
+                <span id="tCurr">0:00</span>
+                <span id="tDur">—</span>
+              </div>
+            </div>
+            <button class="vol-btn" id="volBtn" aria-label="Без звука / со звуком">
+              <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                <path d="M2 5.5h3L9 2v13L5 11.5H2V5.5z" fill="currentColor"/>
+                <path id="volWave" d="M11 4.5c1.4 1 2.3 2.4 2.3 4s-.9 3-2.3 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hint: no content yet -->
+        <div class="hint-box" id="hint">
+          Текст лекции ещё не добавлен. Вставьте содержимое из PDF в поле
+          <code>text</code> этой лекции в <code>index.html</code>,
+          и кнопка «Воспроизвести» начнёт читать текст вслух.
+        </div>
+
+        <!-- Lesson text (shown & highlighted during TTS) -->
+        <div class="text-wrap" id="textWrap">
+          <div class="text-body" id="textBody"></div>
+        </div>
+
+        <p class="lesson-desc" id="lessonDesc"></p>
+
+        <div class="lesson-nav">
+          <button class="nav-btn" id="prevBtn" style="display:none">
+            <span class="nav-dir">← Предыдущая</span>
+            <span class="nav-label" id="prevLbl"></span>
+          </button>
+          <button class="nav-btn right" id="nextBtn" style="display:none">
+            <span class="nav-dir">Следующая →</span>
+            <span class="nav-label" id="nextLbl"></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+// =============================================================================
+// ДАННЫЕ КУРСА
+// Вставьте текст лекции из PDF в поле `text` нужной лекции.
+// Поле `src` оставьте пустым ("") если используете синтез речи.
+// Если есть готовый mp3-файл — укажите путь: src: "audio/macro/vvp.mp3"
+// =============================================================================
+const COURSE = [
+  {
+    id: "macro", icon: "📈", title: "Макроэкономика",
+    lessons: [
+      {
+        id: "m1", title: "ВВП и национальный доход", src: "",
+        desc: "Как измеряется совокупное производство страны. ВВП, ВНП, методы подсчёта — производственный, расходный, доходный — и ограничения этих показателей как мер благосостояния.",
+        // Вставьте сюда текст лекции:
+        text: ""
+      },
+      {
+        id: "m2", title: "Инфляция и ценовая стабильность", src: "",
+        desc: "Природа инфляции, её виды и последствия. Индексы цен, таргетирование инфляции и роль центрального банка в поддержании ценовой стабильности.",
+        text: ""
+      },
+      {
+        id: "m3", title: "Безработица и занятость", src: "",
+        desc: "Типы безработицы, естественный уровень, кривая Филлипса. Государственная политика занятости и её ограничения.",
+        text: ""
+      },
+      {
+        id: "m4", title: "Денежно-кредитная политика", src: "",
+        desc: "Инструменты центрального банка: ключевая ставка, операции на открытом рынке, норматив обязательных резервов. Передаточный механизм монетарной политики.",
+        text: ""
+      },
+      {
+        id: "m5", title: "Бюджетно-налоговая политика", src: "",
+        desc: "Государственные расходы, налоги, бюджетный мультипликатор. Управление государственным долгом и циклические эффекты фискальной политики.",
+        text: ""
+      },
+    ]
+  },
+  {
+    id: "micro", icon: "⚖️", title: "Микроэкономика",
+    lessons: [
+      {
+        id: "mi1", title: "Спрос и предложение", src: "",
+        desc: "Рыночное равновесие, сдвиги кривых, ценообразование в конкурентной среде. Излишки потребителя и производителя.",
+        text: ""
+      },
+      {
+        id: "mi2", title: "Эластичность", src: "",
+        desc: "Ценовая, доходная и перекрёстная эластичность спроса. Практическое применение в ценовой политике и налогообложении.",
+        text: ""
+      },
+      {
+        id: "mi3", title: "Теория фирмы", src: "",
+        desc: "Производственная функция, издержки производства в краткосрочном и долгосрочном периоде. Условие максимизации прибыли.",
+        text: ""
+      },
+      {
+        id: "mi4", title: "Рыночные структуры", src: "",
+        desc: "Совершенная конкуренция, монополия, олигополия, монополистическая конкуренция — сравнение поведения фирм и последствий для благосостояния.",
+        text: ""
+      },
+      {
+        id: "mi5", title: "Теория потребителя", src: "",
+        desc: "Полезность, бюджетное ограничение, кривые безразличия. Потребительский выбор, эффект замены и эффект дохода.",
+        text: ""
+      },
+    ]
+  },
+  {
+    id: "finance", icon: "💼", title: "Финансы",
+    lessons: [
+      {
+        id: "f1", title: "Финансовые рынки", src: "",
+        desc: "Функции финансовых рынков, основные участники, инструменты. Фондовый и долговой рынки, их взаимодействие с реальным сектором.",
+        text: ""
+      },
+      {
+        id: "f2", title: "Ценные бумаги и инвестиции", src: "",
+        desc: "Акции, облигации, производные инструменты. Стоимостная оценка активов и основы портфельного анализа.",
+        text: ""
+      },
+      {
+        id: "f3", title: "Риск и доходность", src: "",
+        desc: "Соотношение риска и доходности, диверсификация портфеля, модель оценки капитальных активов CAPM.",
+        text: ""
+      },
+      {
+        id: "f4", title: "Корпоративные финансы", src: "",
+        desc: "Структура капитала, стоимость привлечения финансирования, дивидендная политика и создание акционерной стоимости.",
+        text: ""
+      },
+    ]
+  },
+  {
+    id: "money", icon: "🏦", title: "Деньги и банки",
+    lessons: [
+      {
+        id: "mb1", title: "Природа и функции денег", src: "",
+        desc: "Происхождение денег, денежные агрегаты M0–M3, эволюция денежных систем от товарных к фиатным.",
+        text: ""
+      },
+      {
+        id: "mb2", title: "Центральный банк", src: "",
+        desc: "Роль регулятора и кредитора последней инстанции. Операционная независимость, инструменты управления денежной массой.",
+        text: ""
+      },
+      {
+        id: "mb3", title: "Кредит и банковское дело", src: "",
+        desc: "Денежный мультипликатор, кредитное создание денег, банковские риски и пруденциальный надзор.",
+        text: ""
+      },
+    ]
+  },
+  {
+    id: "intl", icon: "🌐", title: "Международная экономика",
+    lessons: [
+      {
+        id: "ie1", title: "Международная торговля", src: "",
+        desc: "Теория абсолютных и сравнительных преимуществ, торговые барьеры, ВТО и современные торговые соглашения.",
+        text: ""
+      },
+      {
+        id: "ie2", title: "Валютные курсы", src: "",
+        desc: "Фиксированный и плавающий курс, паритет покупательной способности, факторы курсообразования и валютные интервенции.",
+        text: ""
+      },
+      {
+        id: "ie3", title: "Платёжный баланс", src: "",
+        desc: "Структура платёжного баланса: счёт текущих операций, финансовый счёт, международные резервы и их роль в макростабилизации.",
+        text: ""
+      },
+    ]
+  }
+];
+
+// =============================================================================
+// STATE
+// =============================================================================
+let cur       = null;   // { ti, li, l, t }
+let playing   = false;
+let muted     = false;
+let ttsMode   = false;  // true when using Web Speech API
+let animId    = null;
+let phase     = 0;
+
+let ttsUtter  = null;   // current SpeechSynthesisUtterance
+let ttsPaused = false;
+let ttsCharIdx = 0;     // current char position
+let ttsTotal   = 0;     // total chars
+let ttsTimer   = null;  // interval for time display
+let ttsStart   = 0;     // Date.now() when speech started
+let ttsElapsed = 0;     // ms elapsed before last pause
+let wordSpans  = [];    // DOM spans for each word
+
+const ALL = COURSE.flatMap((t, ti) => t.lessons.map((l, li) => ({ ti, li, l, t })));
+
+// =============================================================================
+// VOICE LOADING
+// =============================================================================
+let voices = [];
+
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
+  const sel = document.getElementById("voiceSel");
+  sel.innerHTML = "";
+
+  const ru = voices.filter(v => v.lang.startsWith("ru"));
+  const others = voices.filter(v => !v.lang.startsWith("ru"));
+
+  if (ru.length === 0 && voices.length === 0) {
+    const o = document.createElement("option");
+    o.value = ""; o.textContent = "Голоса не найдены";
+    sel.appendChild(o);
+    return;
+  }
+
+  // Russian voices first
+  if (ru.length > 0) {
+    const grp = document.createElement("optgroup");
+    grp.label = "Русские голоса";
+    ru.forEach(v => {
+      const o = document.createElement("option");
+      o.value = v.name;
+      o.textContent = v.name + (v.localService ? "" : " ☁");
+      o.selected = v.default && v.lang.startsWith("ru");
+      grp.appendChild(o);
+    });
+    sel.appendChild(grp);
+  }
+
+  if (others.length > 0 && ru.length === 0) {
+    // No Russian — show all so user can pick
+    others.slice(0, 12).forEach(v => {
+      const o = document.createElement("option");
+      o.value = v.name;
+      o.textContent = `${v.lang} — ${v.name}`;
+      sel.appendChild(o);
+    });
+  }
+
+  // default: first russian voice
+  if (ru.length > 0) sel.value = ru[0].name;
+}
+
+if (typeof speechSynthesis !== "undefined") {
+  speechSynthesis.addEventListener("voiceschanged", loadVoices);
+  loadVoices();
+}
+
+// =============================================================================
+// SIDEBAR
+// =============================================================================
+function buildSidebar() {
+  const nav = document.getElementById("sbNav");
+  COURSE.forEach((topic, ti) => {
+    const sec = document.createElement("div");
+
+    const btn = document.createElement("button");
+    btn.className = "topic-btn";
+    btn.setAttribute("aria-expanded", "false");
+    btn.innerHTML =
+      `<span class="topic-icon">${topic.icon}</span>` +
+      `<span class="topic-label">${topic.title}</span>` +
+      `<svg class="topic-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2l5 4-5 4"/></svg>`;
+
+    const list = document.createElement("ul");
+    list.className = "lessons-list";
+
+    topic.lessons.forEach((lesson, li) => {
+      const item = document.createElement("li");
+      const lb = document.createElement("button");
+      lb.className = "lesson-btn";
+      lb.dataset.ti = ti; lb.dataset.li = li;
+      lb.innerHTML =
+        `<span class="lesson-num">${String(li+1).padStart(2,"0")}</span>` +
+        `<span>${lesson.title}</span>`;
+      lb.addEventListener("click", () => { pick(ti, li); closeMobile(); });
+      item.appendChild(lb);
+      list.appendChild(item);
+    });
+
+    btn.addEventListener("click", () => toggleTopic(ti, btn, list));
+    sec.appendChild(btn);
+    sec.appendChild(list);
+    nav.appendChild(sec);
+  });
+
+  const total = COURSE.reduce((s, t) => s + t.lessons.length, 0);
+  document.getElementById("sbCount").textContent =
+    `${COURSE.length} разделов · ${total} лекций`;
+}
+
+function toggleTopic(ti, btn, list) {
+  const wasOpen = list.classList.contains("open");
+  document.querySelectorAll(".topic-btn").forEach(b => { b.classList.remove("open"); b.setAttribute("aria-expanded","false"); });
+  document.querySelectorAll(".lessons-list").forEach(l => l.classList.remove("open"));
+  if (!wasOpen) { btn.classList.add("open"); btn.setAttribute("aria-expanded","true"); list.classList.add("open"); }
+}
+
+// =============================================================================
+// LESSON SELECTION
+// =============================================================================
+function pick(ti, li) {
+  const topic = COURSE[ti], lesson = topic.lessons[li];
+  cur = { ti, li, l: lesson, t: topic };
+
+  // stop any running playback
+  stopAll();
+
+  // sidebar highlight
+  document.querySelectorAll(".lesson-btn").forEach(b => b.classList.remove("active"));
+  const lb = document.querySelector(`.lesson-btn[data-ti="${ti}"][data-li="${li}"]`);
+  if (lb) {
+    lb.classList.add("active");
+    const sec = lb.closest("div");
+    const tb = sec.querySelector(".topic-btn");
+    const ll = sec.querySelector(".lessons-list");
+    if (tb && ll) { tb.classList.add("open"); tb.setAttribute("aria-expanded","true"); ll.classList.add("open"); }
+  }
+
+  // show view
+  document.getElementById("welcome").classList.add("hidden");
+  document.getElementById("lessonView").classList.add("visible");
+
+  document.getElementById("bcTopic").textContent  = topic.title;
+  document.getElementById("bcLesson").textContent = `Лекция ${li + 1}`;
+  document.getElementById("lessonTitle").textContent = lesson.title;
+  document.getElementById("lessonDesc").textContent  = lesson.desc;
+
+  const hint    = document.getElementById("hint");
+  const textWrap = document.getElementById("textWrap");
+  const ttsCtrl  = document.getElementById("ttsControls");
+  const audEl    = document.getElementById("audio");
+
+  const hasAudio = !!lesson.src;
+  const hasText  = lesson.text && lesson.text.trim().length > 0;
+
+  if (hasAudio) {
+    // ── Audio file mode ──────────────────────────
+    ttsMode = false;
+    audEl.src = lesson.src;
+    hint.classList.remove("show");
+    textWrap.classList.remove("show");
+    ttsCtrl.classList.remove("show");
+    setStatus("ready", "Готов к воспроизведению");
+  } else if (hasText) {
+    // ── TTS mode ─────────────────────────────────
+    ttsMode = true;
+    audEl.src = "";
+    hint.classList.remove("show");
+    ttsCtrl.classList.add("show");
+    renderTextSpans(lesson.text);
+    textWrap.classList.add("show");
+    setStatus("ready", "Нажмите ▶ для воспроизведения");
+  } else {
+    // ── Empty ─────────────────────────────────────
+    ttsMode = false;
+    audEl.src = "";
+    hint.classList.add("show");
+    textWrap.classList.remove("show");
+    ttsCtrl.classList.remove("show");
+    setStatus("missing", "Текст не добавлен");
+  }
+
+  resetProg();
+  drawStatic();
+
+  // prev / next
+  const fi = ALL.findIndex(x => x.ti === ti && x.li === li);
+  const prev = ALL[fi-1], next = ALL[fi+1];
+  const pb = document.getElementById("prevBtn"), nb = document.getElementById("nextBtn");
+  if (prev) { pb.style.display=""; document.getElementById("prevLbl").textContent=prev.l.title; pb.onclick=()=>pick(prev.ti,prev.li); }
+  else pb.style.display="none";
+  if (next) { nb.style.display=""; document.getElementById("nextLbl").textContent=next.l.title; nb.onclick=()=>pick(next.ti,next.li); }
+  else nb.style.display="none";
+
+  localStorage.setItem("ll", JSON.stringify({ ti, li }));
+  document.getElementById("main").scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// =============================================================================
+// TEXT → WORD SPANS
+// =============================================================================
+function renderTextSpans(text) {
+  const body = document.getElementById("textBody");
+  body.innerHTML = "";
+  wordSpans = [];
+
+  // Split into tokens: words and whitespace/punctuation runs
+  // We assign charIndex to each word span
+  const tokens = text.split(/(\s+)/);
+  let pos = 0;
+  const frag = document.createDocumentFragment();
+
+  tokens.forEach(tok => {
+    if (/^\s+$/.test(tok)) {
+      frag.appendChild(document.createTextNode(tok));
+    } else if (tok.length > 0) {
+      const span = document.createElement("span");
+      span.className = "w";
+      span.textContent = tok;
+      span.dataset.start = pos;
+      span.dataset.end   = pos + tok.length;
+      wordSpans.push(span);
+      frag.appendChild(span);
+    }
+    pos += tok.length;
+  });
+
+  body.appendChild(frag);
+}
+
+function highlightWord(charIdx) {
+  wordSpans.forEach(s => s.classList.remove("hi"));
+  // find the span whose range contains charIdx
+  for (let i = wordSpans.length - 1; i >= 0; i--) {
+    if (parseInt(wordSpans[i].dataset.start) <= charIdx) {
+      wordSpans[i].classList.add("hi");
+      // scroll it into view within the text-wrap
+      wordSpans[i].scrollIntoView({ block: "nearest", behavior: "smooth" });
+      break;
+    }
+  }
+}
+
+// =============================================================================
+// TTS ENGINE
+// =============================================================================
+function startTTS() {
+  if (!cur || !cur.l.text) return;
+  if (typeof speechSynthesis === "undefined") {
+    setStatus("missing", "Браузер не поддерживает TTS");
+    return;
+  }
+
+  speechSynthesis.cancel();
+  ttsCharIdx = 0;
+  ttsTotal   = cur.l.text.length;
+
+  const utter = new SpeechSynthesisUtterance(cur.l.text);
+  utter.lang  = "ru-RU";
+  utter.rate  = parseFloat(document.getElementById("speedSel").value) || 1;
+  utter.volume = muted ? 0 : 1;
+
+  const voiceName = document.getElementById("voiceSel").value;
+  if (voiceName) {
+    const v = voices.find(v => v.name === voiceName);
+    if (v) utter.voice = v;
+  }
+
+  utter.onstart = () => {
+    playing   = true;
+    ttsPaused = false;
+    ttsStart  = Date.now();
+    setPlayIcon(true);
+    setStatus("playing", "Воспроизводится");
+    animateWave();
+    startTTSTimer();
+  };
+
+  utter.onboundary = e => {
+    if (e.name === "word") {
+      ttsCharIdx = e.charIndex;
+      const pct = ttsTotal > 0 ? (ttsCharIdx / ttsTotal) * 100 : 0;
+      document.getElementById("progFill").style.width = pct + "%";
+      highlightWord(ttsCharIdx);
+    }
+  };
+
+  utter.onpause = () => {
+    ttsPaused  = true;
+    playing    = false;
+    ttsElapsed += Date.now() - ttsStart;
+    setPlayIcon(false);
+    setStatus("ready", "Пауза");
+    cancelAnimationFrame(animId);
+    drawStatic();
+    clearInterval(ttsTimer);
+  };
+
+  utter.onresume = () => {
+    ttsPaused = false;
+    playing   = true;
+    ttsStart  = Date.now();
+    setPlayIcon(true);
+    setStatus("playing", "Воспроизводится");
+    animateWave();
+    startTTSTimer();
+  };
+
+  utter.onend = () => {
+    playing = false;
+    setPlayIcon(false);
+    setStatus("ready", "Лекция завершена");
+    cancelAnimationFrame(animId);
+    drawStatic();
+    clearInterval(ttsTimer);
+    document.getElementById("progFill").style.width = "100%";
+    wordSpans.forEach(s => s.classList.remove("hi"));
+  };
+
+  utter.onerror = () => {
+    playing = false;
+    setPlayIcon(false);
+    setStatus("missing", "Ошибка воспроизведения");
+    cancelAnimationFrame(animId);
+    drawStatic();
+    clearInterval(ttsTimer);
+  };
+
+  ttsUtter = utter;
+  ttsElapsed = 0;
+  speechSynthesis.speak(utter);
+}
+
+function startTTSTimer() {
+  clearInterval(ttsTimer);
+  ttsTimer = setInterval(() => {
+    const ms = ttsElapsed + (Date.now() - ttsStart);
+    document.getElementById("tCurr").textContent = fmt(ms / 1000);
+  }, 300);
+}
+
+function pauseTTS() {
+  speechSynthesis.pause();
+}
+
+function resumeTTS() {
+  if (speechSynthesis.paused) {
+    speechSynthesis.resume();
+  } else {
+    startTTS();
+  }
+}
+
+// =============================================================================
+// AUDIO FILE ENGINE
+// =============================================================================
+const audEl = document.getElementById("audio");
+
+audEl.addEventListener("play", () => {
+  playing = true; setPlayIcon(true);
+  setStatus("playing", "Воспроизводится"); animateWave();
+});
+audEl.addEventListener("pause", () => {
+  playing = false; setPlayIcon(false);
+  setStatus("ready", "Пауза"); cancelAnimationFrame(animId); drawStatic();
+});
+audEl.addEventListener("ended", () => {
+  playing = false; setPlayIcon(false);
+  setStatus("ready", "Лекция завершена"); cancelAnimationFrame(animId); drawStatic();
+});
+audEl.addEventListener("timeupdate", () => {
+  const p = audEl.duration ? (audEl.currentTime / audEl.duration) * 100 : 0;
+  document.getElementById("progFill").style.width = p + "%";
+  document.getElementById("tCurr").textContent = fmt(audEl.currentTime);
+});
+audEl.addEventListener("loadedmetadata", () => {
+  document.getElementById("tDur").textContent = fmt(audEl.duration);
+});
+
+document.getElementById("progTrack").addEventListener("click", e => {
+  if (ttsMode) return;
+  if (!audEl.src || !audEl.duration) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  audEl.currentTime = ((e.clientX - r.left) / r.width) * audEl.duration;
+});
+
+// =============================================================================
+// UNIFIED PLAY BUTTON
+// =============================================================================
+document.getElementById("playBtn").addEventListener("click", togglePlay);
+
+function togglePlay() {
+  if (ttsMode) {
+    if (!playing) {
+      if (speechSynthesis.paused) resumeTTS();
+      else startTTS();
+    } else {
+      pauseTTS();
+    }
+  } else {
+    if (!audEl.src) return;
+    if (playing) audEl.pause(); else audEl.play().catch(() => {});
+  }
+}
+
+// Volume / mute
+document.getElementById("volBtn").addEventListener("click", () => {
+  muted = !muted;
+  audEl.muted = muted;
+  if (ttsUtter) ttsUtter.volume = muted ? 0 : 1;
+  document.getElementById("volBtn").classList.toggle("muted", muted);
+  document.getElementById("volWave").style.display = muted ? "none" : "";
+});
+
+// Speed change while TTS is active: restart from beginning
+document.getElementById("speedSel").addEventListener("change", () => {
+  if (ttsMode && (playing || ttsPaused)) {
+    stopAll();
+    startTTS();
+  }
+});
+
+// =============================================================================
+// STOP ALL PLAYBACK
+// =============================================================================
+function stopAll() {
+  // stop audio
+  audEl.pause();
+  audEl.currentTime = 0;
+  // stop TTS
+  if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
+  clearInterval(ttsTimer);
+  cancelAnimationFrame(animId);
+  playing   = false;
+  ttsPaused = false;
+  ttsElapsed = 0;
+  ttsCharIdx = 0;
+  wordSpans.forEach(s => s.classList.remove("hi"));
+  setPlayIcon(false);
+}
+
+function resetProg() {
+  document.getElementById("progFill").style.width = "0%";
+  document.getElementById("tCurr").textContent = "0:00";
+  document.getElementById("tDur").textContent = "—";
+}
+
+function setStatus(type, txt) {
+  const d = document.getElementById("dot");
+  d.className = "status-dot" + (type==="playing"?" playing":type==="missing"?" missing":"");
+  document.getElementById("statusTxt").textContent = txt;
+}
+
+function setPlayIcon(p) {
+  document.getElementById("playIcon").setAttribute("d",
+    p ? "M3 2h3v12H3V2zm7 0h3v12h-3V2z"
+      : "M4 2.5L13 8L4 13.5V2.5Z"
+  );
+}
+
+function fmt(s) {
+  if (!s || isNaN(s)) return "0:00";
+  return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+}
+
+// =============================================================================
+// WAVEFORM CANVAS
+// =============================================================================
+function getCtx(id) {
+  const c = document.getElementById(id);
+  if (!c) return null;
+  const dpr = window.devicePixelRatio || 1;
+  const w = c.clientWidth, h = c.clientHeight;
+  c.width = w * dpr; c.height = h * dpr;
+  const ctx = c.getContext("2d");
+  ctx.scale(dpr, dpr);
+  return { ctx, w, h };
+}
+
+function drawStatic() {
+  const g = getCtx("waveCanvas");
+  if (!g) return;
+  const { ctx, w, h } = g;
+  ctx.clearRect(0, 0, w, h);
+  const N = 56, bw = w/N*0.55, gap = w/N;
+  ctx.fillStyle = "rgba(17,28,16,0.11)";
+  for (let i = 0; i < N; i++) {
+    const t = i/N;
+    const amp = 0.12 + 0.45*Math.sin(t*Math.PI)*(0.6+0.4*Math.sin(t*Math.PI*3.5));
+    const bh = Math.max(3, amp*h);
+    ctx.fillRect(i*gap+gap*0.22, (h-bh)/2, bw, bh);
+  }
+}
+
+function animateWave() {
+  const g = getCtx("waveCanvas");
+  if (!g) return;
+  const { ctx, w, h } = g;
+  function frame() {
+    if (!playing) return;
+    ctx.clearRect(0, 0, w, h);
+    phase += 0.038;
+    const N = 56, bw = w/N*0.55, gap = w/N;
+    for (let i = 0; i < N; i++) {
+      const t = i/N;
+      const amp =
+        0.08 +
+        0.52*Math.abs(Math.sin(t*Math.PI)) *
+        (0.5+0.5*Math.sin(phase*1.2+t*Math.PI*4.5)) *
+        (0.65+0.35*Math.sin(phase*0.6+t*Math.PI*8));
+      const bh = Math.max(3, amp*h);
+      const v  = Math.min(1, amp/0.6);
+      const r  = Math.round(217*v+80*(1-v));
+      const gv = Math.round(146*v+100*(1-v));
+      const b  = Math.round(15*v+10*(1-v));
+      ctx.fillStyle = `rgb(${r},${gv},${b})`;
+      ctx.fillRect(i*gap+gap*0.22, (h-bh)/2, bw, bh);
+    }
+    animId = requestAnimationFrame(frame);
+  }
+  animId = requestAnimationFrame(frame);
+}
+
+function drawWelcome() {
+  const g = getCtx("wlcCanvas");
+  if (!g) return;
+  const { ctx, w, h } = g;
+  ctx.clearRect(0, 0, w, h);
+  const N=80, bw=w/N*0.45, gap=w/N;
+  for (let i=0; i<N; i++) {
+    const t=i/N;
+    const amp=0.08+0.72*Math.pow(Math.sin(t*Math.PI),1.4)*(0.45+0.55*Math.sin(t*Math.PI*5.5));
+    const bh=Math.max(2,amp*h);
+    ctx.fillStyle=`rgba(17,28,16,${0.05+0.13*amp})`;
+    ctx.fillRect(i*gap+gap*0.27,(h-bh)/2,bw,bh);
+  }
+}
+
+// =============================================================================
+// MOBILE
+// =============================================================================
+document.getElementById("hbg").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("on");
+});
+document.getElementById("overlay").addEventListener("click", closeMobile);
+function closeMobile() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("overlay").classList.remove("on");
+}
+
+// =============================================================================
+// WELCOME STATS
+// =============================================================================
+function buildStats() {
+  const s = document.getElementById("wlcStats");
+  s.innerHTML =
+    `<div class="stat"><span class="stat-num">${COURSE.length}</span><span class="stat-label">Разделов</span></div>` +
+    `<div class="stat"><span class="stat-num">${ALL.length}</span><span class="stat-label">Лекций</span></div>`;
+}
+
+// =============================================================================
+// INIT
+// =============================================================================
+buildSidebar();
+buildStats();
+drawWelcome();
+drawStatic();
+
+const saved = localStorage.getItem("ll");
+if (saved) {
+  try {
+    const { ti, li } = JSON.parse(saved);
+    if (COURSE[ti]?.lessons[li]) pick(ti, li);
+  } catch {}
+}
+
+window.addEventListener("resize", () => {
+  drawWelcome();
+  if (!playing) drawStatic();
+});
+</script>
+
+</body>
+</html>
