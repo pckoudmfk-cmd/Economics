@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Экономика — Аудиолекции</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,26 +24,27 @@
       --sidebar-w:    272px;
     }
 
-    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.6; }
-    body { background: var(--sb-bg); color: var(--text); overflow: hidden; }
+    html { height: 100%; }
+    body { height: 100%; height: -webkit-fill-available; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.6; background: var(--sb-bg); color: var(--text); overflow: hidden; }
 
     /* ── SHELL ──────────────────────────────────────── */
-    .app { display: flex; height: 100vh; }
+    .app { display: flex; height: 100vh; height: 100dvh; }
 
     /* ── SIDEBAR ────────────────────────────────────── */
     .sidebar {
       width: var(--sidebar-w); min-width: var(--sidebar-w);
       background: var(--sb-bg);
-      display: flex; flex-direction: column; height: 100vh;
+      display: flex; flex-direction: column; height: 100vh; height: 100dvh;
       border-right: 1px solid rgba(255,255,255,0.05);
       position: relative; z-index: 10;
+      padding-top: env(safe-area-inset-top, 0px);
     }
     .sb-head { padding: 30px 22px 22px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
     .sb-eyebrow { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 7px; display: block; font-style: italic; }
     .sb-title { font-family: Georgia, "Times New Roman", serif; font-size: 20px; font-weight: normal; color: #E0EAD8; letter-spacing: -0.01em; line-height: 1.25; }
     .sb-count { margin-top: 8px; font-size: 11px; color: rgba(168,196,160,0.45); letter-spacing: 0.04em; }
 
-    .sb-nav { flex: 1; overflow-y: auto; padding: 10px 0 28px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.08) transparent; }
+    .sb-nav { flex: 1; overflow-y: auto; padding: 10px 0 28px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.08) transparent; -webkit-overflow-scrolling: touch; }
     .sb-nav::-webkit-scrollbar { width: 3px; }
     .sb-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
 
@@ -64,7 +65,7 @@
     .lesson-num { font-size: 10px; font-family: "SF Mono", Consolas, monospace; opacity: 0.45; flex-shrink: 0; margin-top: 2px; }
 
     /* ── CONTENT ────────────────────────────────────── */
-    .content { flex: 1; background: var(--ground); overflow-y: auto; height: 100vh; }
+    .content { flex: 1; background: var(--ground); overflow-y: auto; height: 100vh; height: 100dvh; -webkit-overflow-scrolling: touch; padding-bottom: env(safe-area-inset-bottom, 0px); }
     .content-inner { max-width: 700px; margin: 0 auto; padding: 60px 48px 80px; }
 
     /* ── WELCOME ────────────────────────────────────── */
@@ -160,6 +161,7 @@
       scroll-behavior: smooth;
       scrollbar-width: thin;
       scrollbar-color: rgba(17,28,16,0.1) transparent;
+      -webkit-overflow-scrolling: touch;
     }
     .text-wrap::-webkit-scrollbar { width: 4px; }
     .text-wrap::-webkit-scrollbar-thumb { background: rgba(17,28,16,0.1); border-radius: 2px; }
@@ -210,18 +212,24 @@
     .nav-label { line-height: 1.4; }
 
     /* ── MOBILE ──────────────────────────────────────── */
-    .hamburger { display: none; position: fixed; top: 14px; left: 14px; z-index: 100; background: var(--sb-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 9px 10px; cursor: pointer; flex-direction: column; gap: 4px; }
+    .hamburger { display: none; position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); left: calc(14px + env(safe-area-inset-left, 0px)); z-index: 100; background: var(--sb-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 9px 10px; cursor: pointer; flex-direction: column; gap: 4px; }
     .hamburger span { display: block; width: 17px; height: 2px; background: var(--sb-text); border-radius: 1px; }
     .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 40; }
     .overlay.on { display: block; }
 
     @media (max-width: 680px) {
       .hamburger { display: flex; }
-      .sidebar { position: fixed; top: 0; left: 0; bottom: 0; transform: translateX(-100%); transition: transform 0.24s ease; z-index: 50; }
+      .sidebar { position: fixed; top: 0; left: 0; bottom: 0; transform: translateX(-100%); transition: transform 0.24s ease; z-index: 50; padding-top: env(safe-area-inset-top, 0px); }
       .sidebar.open { transform: translateX(0); }
-      .content-inner { padding: 60px 22px 64px; }
+      .content-inner { padding: calc(54px + env(safe-area-inset-top, 0px)) 20px calc(64px + env(safe-area-inset-bottom, 0px)); }
       .lesson-title { font-size: 22px; }
-      .text-wrap { max-height: 260px; }
+      .text-wrap { max-height: 240px; }
+      .ctrl-select { font-size: 16px; }
+      .play-btn { width: 48px; height: 48px; }
+      .vol-btn { padding: 10px; }
+      .player-wrap { padding: 18px 18px 20px; }
+      .lesson-nav { gap: 8px; }
+      .nav-btn { padding: 12px 14px; }
     }
 
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -1200,12 +1208,30 @@ function highlightWord(charIdx) {
 }
 
 // =============================================================================
-// TTS ENGINE
+// TTS ENGINE  (chunk-based — fixes iOS Safari 10-second cutoff)
 // =============================================================================
-let ttsKeepAlive = null; // Chrome bug fix: keeps synthesis alive on long texts
 
-function stopKeepAlive() {
-  if (ttsKeepAlive) { clearInterval(ttsKeepAlive); ttsKeepAlive = null; }
+// iOS Safari does not support speechSynthesis.pause() and cuts off long
+// utterances.  We split text into per-line chunks and chain them so each
+// utterance is only a few seconds long.
+
+let ttsChunks       = [];
+let ttsChunkIdx     = 0;
+let ttsChunkOffsets = [];
+
+function buildChunks(text) {
+  return text.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0);
+}
+
+function buildChunkOffsets(chunks, rawText) {
+  const offsets = [];
+  let from = 0;
+  for (const chunk of chunks) {
+    const idx = rawText.indexOf(chunk, from);
+    offsets.push(idx >= 0 ? idx : from);
+    from = (idx >= 0 ? idx : from) + chunk.length;
+  }
+  return offsets;
 }
 
 function startTTS() {
@@ -1214,109 +1240,89 @@ function startTTS() {
     setStatus("missing", "Браузер не поддерживает синтез речи");
     return;
   }
-
   speechSynthesis.cancel();
-  stopKeepAlive();
-  ttsCharIdx = 0;
-  ttsTotal   = cur.l.text.length;
 
-  // Reload voices if needed (Chrome async issue)
-  if (voices.length === 0) { voices = speechSynthesis.getVoices(); }
+  const text      = cur.l.text;
+  ttsTotal        = text.length;
+  ttsCharIdx      = 0;
+  ttsChunks       = buildChunks(text);
+  ttsChunkOffsets = buildChunkOffsets(ttsChunks, text);
+  ttsChunkIdx     = 0;
+  ttsElapsed      = 0;
 
-  const utter = new SpeechSynthesisUtterance(cur.l.text);
-  utter.lang  = "ru-RU";
-  utter.rate  = parseFloat(document.getElementById("speedSel").value) || 1;
+  if (ttsChunks.length === 0) return;
+  if (voices.length === 0) voices = speechSynthesis.getVoices();
+
+  playing   = true;
+  ttsPaused = false;
+  ttsStart  = Date.now();
+  setPlayIcon(true);
+  setStatus("playing", "Воспроизводится");
+  animateWave();
+  startTTSTimer();
+  speakNextChunk();
+}
+
+function speakNextChunk() {
+  if (!playing) return;
+  if (ttsChunkIdx >= ttsChunks.length) { onTTSEnd(); return; }
+
+  const chunk  = ttsChunks[ttsChunkIdx];
+  const offset = ttsChunkOffsets[ttsChunkIdx] || 0;
+
+  const utter  = new SpeechSynthesisUtterance(chunk);
+  utter.lang   = "ru-RU";
+  utter.rate   = parseFloat(document.getElementById("speedSel").value) || 1;
   utter.volume = muted ? 0 : 1;
 
-  // Pick voice: prefer selected, fallback to any Russian, then system default
   const voiceName = document.getElementById("voiceSel").value;
-  const ruVoices  = voices.filter(v => v.lang.startsWith("ru"));
   if (voiceName) {
     const v = voices.find(v => v.name === voiceName);
     if (v) utter.voice = v;
-  } else if (ruVoices.length > 0) {
-    utter.voice = ruVoices[0];
+  } else {
+    const ruVoices = voices.filter(v => v.lang.startsWith("ru"));
+    if (ruVoices.length > 0) utter.voice = ruVoices[0];
   }
 
-  utter.onstart = () => {
-    playing   = true;
-    ttsPaused = false;
-    ttsStart  = Date.now();
-    setPlayIcon(true);
-    setStatus("playing", "Воспроизводится");
-    animateWave();
-    startTTSTimer();
-    // Chrome bug: synthesis stops after ~15 sec without this workaround
-    ttsKeepAlive = setInterval(() => {
-      if (!playing) { stopKeepAlive(); return; }
-      if (speechSynthesis.speaking && !speechSynthesis.paused) {
-        speechSynthesis.pause();
-        speechSynthesis.resume();
-      }
-    }, 10000);
-  };
-
   utter.onboundary = e => {
-    if (e.name === "word") {
-      ttsCharIdx = e.charIndex;
-      const pct = ttsTotal > 0 ? (ttsCharIdx / ttsTotal) * 100 : 0;
-      document.getElementById("progFill").style.width = pct + "%";
-      highlightWord(ttsCharIdx);
-    }
-  };
-
-  utter.onpause = () => {
-    ttsPaused  = true;
-    playing    = false;
-    ttsElapsed += Date.now() - ttsStart;
-    setPlayIcon(false);
-    setStatus("ready", "Пауза");
-    cancelAnimationFrame(animId);
-    drawStatic();
-    clearInterval(ttsTimer);
-    stopKeepAlive();
-  };
-
-  utter.onresume = () => {
-    ttsPaused = false;
-    playing   = true;
-    ttsStart  = Date.now();
-    setPlayIcon(true);
-    setStatus("playing", "Воспроизводится");
-    animateWave();
-    startTTSTimer();
+    if (e.name !== "word") return;
+    const globalIdx = offset + e.charIndex;
+    ttsCharIdx = globalIdx;
+    document.getElementById("progFill").style.width =
+      ttsTotal > 0 ? (globalIdx / ttsTotal * 100) + "%" : "0%";
+    highlightWord(globalIdx);
   };
 
   utter.onend = () => {
-    playing = false;
-    stopKeepAlive();
-    setPlayIcon(false);
-    setStatus("ready", "Лекция завершена");
-    cancelAnimationFrame(animId);
-    drawStatic();
-    clearInterval(ttsTimer);
-    document.getElementById("progFill").style.width = "100%";
-    wordSpans.forEach(s => s.classList.remove("hi"));
+    if (!playing) return;
+    ttsChunkIdx++;
+    speakNextChunk();
   };
 
   utter.onerror = e => {
+    if (e.error === "interrupted" || e.error === "canceled") return;
     playing = false;
-    stopKeepAlive();
     setPlayIcon(false);
-    // "interrupted" is expected when user clicks stop — don't show error
-    if (e.error !== "interrupted" && e.error !== "canceled") {
-      setStatus("missing", `Ошибка: ${e.error || "неизвестная"}`);
-    } else {
-      setStatus("ready", "Готов к воспроизведению");
-    }
+    setStatus("missing", `Ошибка: ${e.error || "неизвестная"}`);
     cancelAnimationFrame(animId);
     drawStatic();
     clearInterval(ttsTimer);
   };
 
   ttsUtter = utter;
-  ttsElapsed = 0;
   speechSynthesis.speak(utter);
+}
+
+function onTTSEnd() {
+  playing   = false;
+  ttsPaused = false;
+  setPlayIcon(false);
+  setStatus("ready", "Лекция завершена");
+  cancelAnimationFrame(animId);
+  drawStatic();
+  clearInterval(ttsTimer);
+  document.getElementById("progFill").style.width = "100%";
+  wordSpans.forEach(s => s.classList.remove("hi"));
 }
 
 function startTTSTimer() {
@@ -1328,12 +1334,28 @@ function startTTSTimer() {
 }
 
 function pauseTTS() {
-  speechSynthesis.pause();
+  playing    = false;
+  ttsPaused  = true;
+  ttsElapsed += Date.now() - ttsStart;
+  speechSynthesis.cancel();
+  setPlayIcon(false);
+  setStatus("ready", "Пауза");
+  cancelAnimationFrame(animId);
+  drawStatic();
+  clearInterval(ttsTimer);
 }
 
 function resumeTTS() {
-  if (speechSynthesis.paused) {
-    speechSynthesis.resume();
+  if (ttsPaused && ttsChunkIdx < ttsChunks.length) {
+    ttsPaused = false;
+    playing   = true;
+    ttsStart  = Date.now();
+    if (voices.length === 0) voices = speechSynthesis.getVoices();
+    setPlayIcon(true);
+    setStatus("playing", "Воспроизводится");
+    animateWave();
+    startTTSTimer();
+    speakNextChunk();
   } else {
     startTTS();
   }
@@ -1379,12 +1401,9 @@ document.getElementById("playBtn").addEventListener("click", togglePlay);
 
 function togglePlay() {
   if (ttsMode) {
-    if (!playing) {
-      if (speechSynthesis.paused) resumeTTS();
-      else startTTS();
-    } else {
-      pauseTTS();
-    }
+    if (playing)       pauseTTS();
+    else if (ttsPaused) resumeTTS();
+    else               startTTS();
   } else {
     if (!audEl.src) return;
     if (playing) audEl.pause(); else audEl.play().catch(() => {});
@@ -1412,18 +1431,16 @@ document.getElementById("speedSel").addEventListener("change", () => {
 // STOP ALL PLAYBACK
 // =============================================================================
 function stopAll() {
-  // stop audio
   audEl.pause();
   audEl.currentTime = 0;
-  // stop TTS
   if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
-  stopKeepAlive();
   clearInterval(ttsTimer);
   cancelAnimationFrame(animId);
-  playing   = false;
-  ttsPaused = false;
-  ttsElapsed = 0;
-  ttsCharIdx = 0;
+  playing      = false;
+  ttsPaused    = false;
+  ttsElapsed   = 0;
+  ttsCharIdx   = 0;
+  ttsChunkIdx  = 0;
   wordSpans.forEach(s => s.classList.remove("hi"));
   setPlayIcon(false);
 }
