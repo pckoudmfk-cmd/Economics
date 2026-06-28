@@ -4,18 +4,32 @@ import type { Exercise, SpeakingExercise } from '../../lib/types'
 import SpeechRecorder from '../../components/SpeechRecorder'
 import { evaluateSpeech, ScoreDisplay } from '../../components/ScoreEvaluator'
 import type { EvaluationResult } from '../../components/ScoreEvaluator'
+import { useAuth } from '../../lib/auth'
+import { saveAttempt } from '../../lib/attempts'
 
 const exercises = EXERCISES.filter(e => e.module === 'speaking')
 
 function SpeakingExerciseView({ ex }: { ex: Exercise }) {
+  const { user } = useAuth()
   const content = ex.content as SpeakingExercise
   const [transcript, setTranscript] = useState('')
   const [result, setResult] = useState<EvaluationResult | null>(null)
   const [showHints, setShowHints] = useState(false)
 
-  function evaluate() {
+  async function evaluate() {
     const r = evaluateSpeech(transcript, content.required_vocab, ex.rubric ?? [], content.required_tenses)
     setResult(r)
+    if (user) {
+      await saveAttempt({
+        userId: user.id,
+        exerciseId: ex.id,
+        module: ex.module,
+        score: r.totalScore,
+        maxScore: ex.max_score,
+        transcript,
+        feedback: r.feedback.join('; '),
+      })
+    }
   }
 
   return (
@@ -30,7 +44,7 @@ function SpeakingExerciseView({ ex }: { ex: Exercise }) {
           </div>
         )}
         <div className="mt-2 text-sm text-blue-600">
-          ⏱ Длительность: {content.duration_min} мин
+          Длительность: {content.duration_min} мин
         </div>
       </div>
 
@@ -137,12 +151,12 @@ export default function SpeakingModule() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">🎙️ Говорение</h2>
+        <h2 className="text-2xl font-bold text-slate-900">Говорение</h2>
         <p className="text-slate-500 mt-1">
           Презентации и диалоги. Речь распознаётся и оценивается автоматически.
         </p>
         <div className="mt-2 text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 inline-block">
-          ⚠️ Требуется Google Chrome или Microsoft Edge
+          Требуется Google Chrome или Microsoft Edge
         </div>
       </div>
       <div className="grid gap-4">
@@ -160,7 +174,7 @@ export default function SpeakingModule() {
                   <div className="text-sm text-slate-500 mt-1">{content.topic}</div>
                   <div className="flex gap-3 mt-2">
                     <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
-                      ⏱ {content.duration_min} мин
+                      {content.duration_min} мин
                     </span>
                     <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
                       {content.required_vocab.length} терминов

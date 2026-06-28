@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { EXERCISES } from '../../lib/exercises-data'
 import type { Exercise, WritingExercise } from '../../lib/types'
+import { useAuth } from '../../lib/auth'
+import { saveAttempt } from '../../lib/attempts'
 
 const exercises = EXERCISES.filter(e => e.module === 'writing')
 
@@ -13,6 +15,7 @@ const BUSINESS_PHRASES = [
 ]
 
 function WritingExerciseView({ ex }: { ex: Exercise }) {
+  const { user } = useAuth()
   const content = ex.content as WritingExercise
   const [text, setText] = useState(content.template ?? '')
   const [showFeedback, setShowFeedback] = useState(false)
@@ -29,6 +32,25 @@ function WritingExerciseView({ ex }: { ex: Exercise }) {
   const hasPurpose = /(i am writing|i would like|please find)/i.test(text)
 
   const structureScore = [hasSalutation, hasSubject, hasClosing, hasPurpose].filter(Boolean).length
+
+  async function check() {
+    setShowFeedback(true)
+    if (user) {
+      const score = Math.round(
+        (meetsMin ? 1 : 0) * 2 +
+        structureScore +
+        Math.min(usedPhrases.length, 3)
+      )
+      await saveAttempt({
+        userId: user.id,
+        exerciseId: ex.id,
+        module: ex.module,
+        score,
+        maxScore: ex.max_score,
+        answers: { text, wordCount: words, structureScore, phrasesUsed: usedPhrases.length },
+      })
+    }
+  }
 
   return (
     <div className="space-y-5">
@@ -81,7 +103,7 @@ function WritingExerciseView({ ex }: { ex: Exercise }) {
       </div>
 
       <button
-        onClick={() => setShowFeedback(true)}
+        onClick={check}
         disabled={words < 20}
         className="w-full py-2.5 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-xl font-medium text-sm transition-colors"
       >
@@ -177,7 +199,7 @@ export default function WritingModule() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">✍️ Письмо</h2>
+        <h2 className="text-2xl font-bold text-slate-900">Письмо</h2>
         <p className="text-slate-500 mt-1">Деловые письма, эссе и другие письменные задания</p>
       </div>
       <div className="grid gap-4">

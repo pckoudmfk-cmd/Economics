@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { EXERCISES } from '../../lib/exercises-data'
 import type { Exercise, FillBlankExercise, VocabMatchExercise } from '../../lib/types'
+import { useAuth } from '../../lib/auth'
+import { saveAttempt } from '../../lib/attempts'
 
 const exercises = EXERCISES.filter(e => e.module === 'vocabulary')
 
 function VocabMatchView({ ex }: { ex: Exercise }) {
+  const { user } = useAuth()
   const content = ex.content as VocabMatchExercise
   const [selected, setSelected] = useState<{ term: string; def: string } | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({})
@@ -43,6 +46,20 @@ function VocabMatchView({ ex }: { ex: Exercise }) {
   }
 
   const score = content.words.filter(w => matches[w.term] === w.definition).length
+
+  async function check() {
+    setChecked(true)
+    if (user) {
+      await saveAttempt({
+        userId: user.id,
+        exerciseId: ex.id,
+        module: ex.module,
+        score,
+        maxScore: ex.max_score,
+        answers: matches,
+      })
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -108,7 +125,7 @@ function VocabMatchView({ ex }: { ex: Exercise }) {
       <div className="flex items-center gap-3 pt-2">
         {!checked ? (
           <button
-            onClick={() => setChecked(true)}
+            onClick={check}
             disabled={Object.keys(matches).length < content.words.length}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50"
           >
@@ -133,11 +150,26 @@ function VocabMatchView({ ex }: { ex: Exercise }) {
 }
 
 function FillBlankVocabView({ ex }: { ex: Exercise }) {
+  const { user } = useAuth()
   const content = ex.content as FillBlankExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
 
   const score = answers.filter((a, i) => a === content.sentences[i].answer).length
+
+  async function check() {
+    setChecked(true)
+    if (user) {
+      await saveAttempt({
+        userId: user.id,
+        exerciseId: ex.id,
+        module: ex.module,
+        score,
+        maxScore: ex.max_score,
+        answers,
+      })
+    }
+  }
 
   return (
     <div className="space-y-5">
@@ -176,7 +208,7 @@ function FillBlankVocabView({ ex }: { ex: Exercise }) {
       })}
       <div className="flex items-center gap-3 pt-2">
         {!checked ? (
-          <button onClick={() => setChecked(true)} className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
+          <button onClick={check} className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
             Проверить
           </button>
         ) : (
@@ -218,7 +250,7 @@ export default function VocabularyModule() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">📚 Лексика</h2>
+        <h2 className="text-2xl font-bold text-slate-900">Лексика</h2>
         <p className="text-slate-500 mt-1">Банковская терминология и деловые выражения</p>
       </div>
       <div className="grid gap-4">

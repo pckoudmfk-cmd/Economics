@@ -3,11 +3,21 @@ import type { ReactNode } from 'react'
 import { supabase } from './supabase'
 import type { UserProfile } from './types'
 
+// Код для регистрации преподавателей (сообщите его только преподавателям)
+export const TEACHER_CODE = 'PREP2024'
+
 interface AuthContextValue {
   user: UserProfile | null
   loading: boolean
   signIn: (email: string, password: string) => Promise<string | null>
-  signUp: (email: string, password: string, fullName: string, role: 'student' | 'teacher', groupName?: string) => Promise<string | null>
+  signUp: (
+    email: string,
+    password: string,
+    fullName: string,
+    role: 'student' | 'teacher',
+    groupName?: string,
+    teacherCode?: string
+  ) => Promise<string | null>
   signOut: () => Promise<void>
 }
 
@@ -58,8 +68,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     password: string,
     fullName: string,
     role: 'student' | 'teacher',
-    groupName?: string
+    groupName?: string,
+    teacherCode?: string
   ) {
+    if (role === 'teacher' && teacherCode !== TEACHER_CODE) {
+      return 'Неверный код преподавателя. Обратитесь к администратору.'
+    }
+
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) return error.message
     if (data.user) {

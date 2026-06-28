@@ -1,18 +1,34 @@
 import { useState } from 'react'
 import { EXERCISES } from '../../lib/exercises-data'
 import type { Exercise, FillBlankExercise, TransformExercise, ErrorCorrectionExercise } from '../../lib/types'
+import { useAuth } from '../../lib/auth'
+import { saveAttempt } from '../../lib/attempts'
 
 const exercises = EXERCISES.filter(e => e.module === 'grammar')
 
 function FillBlankExerciseView({ ex }: { ex: Exercise }) {
+  const { user } = useAuth()
   const content = ex.content as FillBlankExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
 
-  function check() { setChecked(true) }
-  function reset() { setAnswers(Array(content.sentences.length).fill('')); setChecked(false) }
-
   const score = answers.filter((a, i) => a.trim().toLowerCase() === content.sentences[i].answer.toLowerCase()).length
+
+  async function check() {
+    setChecked(true)
+    if (user) {
+      await saveAttempt({
+        userId: user.id,
+        exerciseId: ex.id,
+        module: ex.module,
+        score,
+        maxScore: ex.max_score,
+        answers,
+      })
+    }
+  }
+
+  function reset() { setAnswers(Array(content.sentences.length).fill('')); setChecked(false) }
 
   return (
     <div className="space-y-5">
@@ -88,6 +104,7 @@ function FillBlankExerciseView({ ex }: { ex: Exercise }) {
 }
 
 function TransformExerciseView({ ex }: { ex: Exercise }) {
+  const { user } = useAuth()
   const content = ex.content as TransformExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
@@ -95,6 +112,20 @@ function TransformExerciseView({ ex }: { ex: Exercise }) {
   const score = answers.filter((a, i) =>
     a.trim().toLowerCase() === content.sentences[i].answer.toLowerCase()
   ).length
+
+  async function check() {
+    setChecked(true)
+    if (user) {
+      await saveAttempt({
+        userId: user.id,
+        exerciseId: ex.id,
+        module: ex.module,
+        score,
+        maxScore: ex.max_score,
+        answers,
+      })
+    }
+  }
 
   return (
     <div className="space-y-5">
@@ -125,7 +156,7 @@ function TransformExerciseView({ ex }: { ex: Exercise }) {
 
       <div className="flex items-center gap-3">
         {!checked ? (
-          <button onClick={() => setChecked(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+          <button onClick={check} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
             Проверить
           </button>
         ) : (
@@ -145,6 +176,7 @@ function TransformExerciseView({ ex }: { ex: Exercise }) {
 }
 
 function ErrorCorrectionView({ ex }: { ex: Exercise }) {
+  const { user } = useAuth()
   const content = ex.content as ErrorCorrectionExercise
   const [answers, setAnswers] = useState<string[]>(content.sentences.map(s => s.wrong))
   const [checked, setChecked] = useState(false)
@@ -152,6 +184,20 @@ function ErrorCorrectionView({ ex }: { ex: Exercise }) {
   const score = answers.filter((a, i) =>
     a.trim().toLowerCase() === content.sentences[i].correct.toLowerCase()
   ).length
+
+  async function check() {
+    setChecked(true)
+    if (user) {
+      await saveAttempt({
+        userId: user.id,
+        exerciseId: ex.id,
+        module: ex.module,
+        score,
+        maxScore: ex.max_score,
+        answers,
+      })
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -180,7 +226,7 @@ function ErrorCorrectionView({ ex }: { ex: Exercise }) {
 
       <div className="flex items-center gap-3 pt-2">
         {!checked ? (
-          <button onClick={() => setChecked(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+          <button onClick={check} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
             Проверить
           </button>
         ) : (
@@ -238,7 +284,7 @@ export default function GrammarModule() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">📝 Грамматика</h2>
+        <h2 className="text-2xl font-bold text-slate-900">Грамматика</h2>
         <p className="text-slate-500 mt-1">Упражнения на времена, артикли, предлоги и трансформации</p>
       </div>
       <div className="grid gap-4">
