@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { useAuth } from '../lib/auth'
 import { EXERCISES, MODULE_LABELS } from '../lib/exercises-data'
 
 const MODULES = [
@@ -11,8 +10,6 @@ const MODULES = [
 ]
 
 export default function StudentDashboard() {
-  const { user } = useAuth()
-
   const countByModule = MODULES.reduce<Record<string, number>>((acc, m) => {
     acc[m.key] = EXERCISES.filter(e => e.module === m.key).length
     return acc
@@ -27,22 +24,13 @@ export default function StudentDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Welcome */}
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">
-          {greeting}, {user?.full_name?.split(' ')[0] ?? 'студент'}!
-        </h2>
+        <h2 className="text-2xl font-bold text-slate-900">{greeting}!</h2>
         <p className="text-slate-500 mt-1">
           Добро пожаловать в интерактивный ФОС по английскому языку для банковского дела.
         </p>
-        {user?.group_name && (
-          <span className="mt-2 inline-block bg-blue-100 text-blue-700 text-xs px-2.5 py-1 rounded-full font-medium">
-            Группа {user.group_name}
-          </span>
-        )}
       </div>
 
-      {/* Modules grid */}
       <div>
         <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">Разделы</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -64,7 +52,6 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      {/* Info block */}
       <div className="bg-blue-900 rounded-xl p-6 text-white">
         <h3 className="font-semibold text-lg mb-2">О курсе</h3>
         <p className="text-blue-200 text-sm leading-relaxed">

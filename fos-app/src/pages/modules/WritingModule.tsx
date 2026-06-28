@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { EXERCISES } from '../../lib/exercises-data'
 import type { Exercise, WritingExercise } from '../../lib/types'
-import { useAuth } from '../../lib/auth'
-import { saveAttempt } from '../../lib/attempts'
 
 const exercises = EXERCISES.filter(e => e.module === 'writing')
 
@@ -15,7 +13,6 @@ const BUSINESS_PHRASES = [
 ]
 
 function WritingExerciseView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as WritingExercise
   const [text, setText] = useState(content.template ?? '')
   const [showFeedback, setShowFeedback] = useState(false)
@@ -35,21 +32,6 @@ function WritingExerciseView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setShowFeedback(true)
-    if (user) {
-      const score = Math.round(
-        (meetsMin ? 1 : 0) * 2 +
-        structureScore +
-        Math.min(usedPhrases.length, 3)
-      )
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers: { text, wordCount: words, structureScore, phrasesUsed: usedPhrases.length },
-      })
-    }
   }
 
   return (

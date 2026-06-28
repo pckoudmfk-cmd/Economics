@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { EXERCISES } from '../../lib/exercises-data'
 import type { Exercise, FillBlankExercise, VocabMatchExercise } from '../../lib/types'
-import { useAuth } from '../../lib/auth'
-import { saveAttempt } from '../../lib/attempts'
 
 const exercises = EXERCISES.filter(e => e.module === 'vocabulary')
 
 function VocabMatchView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as VocabMatchExercise
   const [selected, setSelected] = useState<{ term: string; def: string } | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({})
@@ -49,16 +46,6 @@ function VocabMatchView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers: matches,
-      })
-    }
   }
 
   return (
@@ -150,7 +137,6 @@ function VocabMatchView({ ex }: { ex: Exercise }) {
 }
 
 function FillBlankVocabView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as FillBlankExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
@@ -159,16 +145,6 @@ function FillBlankVocabView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers,
-      })
-    }
   }
 
   return (

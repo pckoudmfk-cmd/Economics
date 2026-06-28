@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '../lib/auth'
+import { Link, useLocation } from 'react-router-dom'
 
-const STUDENT_NAV = [
+const NAV = [
   { path: '/student', label: 'Главная', icon: '🏠' },
   { path: '/student/grammar', label: 'Грамматика', icon: '📝' },
   { path: '/student/vocabulary', label: 'Лексика', icon: '📚' },
@@ -11,25 +10,9 @@ const STUDENT_NAV = [
   { path: '/student/dialogue', label: 'Диалоги', icon: '💬' },
 ]
 
-const TEACHER_NAV = [
-  { path: '/teacher', label: 'Главная', icon: '🏠' },
-  { path: '/teacher/students', label: 'Студенты', icon: '👥' },
-  { path: '/teacher/progress', label: 'Прогресс', icon: '📊' },
-  { path: '/teacher/exercises', label: 'Задания', icon: '📋' },
-]
-
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { user, signOut } = useAuth()
   const location = useLocation()
-  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
-
-  const nav = user?.role === 'teacher' ? TEACHER_NAV : STUDENT_NAV
-
-  async function handleSignOut() {
-    await signOut()
-    navigate('/login')
-  }
 
   return (
     <div className="flex min-h-screen bg-slate-50">
@@ -43,17 +26,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <nav className="flex-1 p-3 space-y-1">
-          {nav.map(item => {
+          {NAV.map(item => {
             const active = location.pathname === item.path ||
-              (item.path !== '/student' && item.path !== '/teacher' && location.pathname.startsWith(item.path))
+              (item.path !== '/student' && location.pathname.startsWith(item.path))
             return (
               <Link
                 key={item.path}
                 to={item.path}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  active
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-slate-600 hover:bg-slate-100'
+                  active ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
                 <span className="text-base">{item.icon}</span>
@@ -64,17 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="p-4 border-t border-slate-200">
-          <div className="text-xs text-slate-500 mb-1">{user?.role === 'teacher' ? 'Преподаватель' : 'Студент'}</div>
-          <div className="text-sm font-medium text-slate-800 truncate">{user?.full_name}</div>
-          {user?.group_name && (
-            <div className="text-xs text-slate-400">{user.group_name}</div>
-          )}
-          <button
-            onClick={handleSignOut}
-            className="mt-3 w-full text-xs text-slate-500 hover:text-red-600 text-left transition-colors"
-          >
-            Выйти →
-          </button>
+          <div className="text-xs text-slate-400">ФОС · Английский язык для банковского дела</div>
         </div>
       </aside>
 
@@ -90,7 +61,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {menuOpen && (
         <div className="md:hidden fixed inset-0 z-10 pt-14 bg-white">
           <nav className="p-4 space-y-1">
-            {nav.map(item => (
+            {NAV.map(item => (
               <Link
                 key={item.path}
                 to={item.path}
@@ -103,9 +74,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {item.label}
               </Link>
             ))}
-            <button onClick={handleSignOut} className="w-full text-left px-3 py-3 text-sm text-red-600">
-              Выйти
-            </button>
           </nav>
         </div>
       )}

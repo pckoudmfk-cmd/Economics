@@ -4,13 +4,10 @@ import type { Exercise, SpeakingExercise } from '../../lib/types'
 import SpeechRecorder from '../../components/SpeechRecorder'
 import { evaluateSpeech, ScoreDisplay } from '../../components/ScoreEvaluator'
 import type { EvaluationResult } from '../../components/ScoreEvaluator'
-import { useAuth } from '../../lib/auth'
-import { saveAttempt } from '../../lib/attempts'
 
 const exercises = EXERCISES.filter(e => e.module === 'speaking')
 
 function SpeakingExerciseView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as SpeakingExercise
   const [transcript, setTranscript] = useState('')
   const [result, setResult] = useState<EvaluationResult | null>(null)
@@ -19,17 +16,6 @@ function SpeakingExerciseView({ ex }: { ex: Exercise }) {
   async function evaluate() {
     const r = evaluateSpeech(transcript, content.required_vocab, ex.rubric ?? [], content.required_tenses)
     setResult(r)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score: r.totalScore,
-        maxScore: ex.max_score,
-        transcript,
-        feedback: r.feedback.join('; '),
-      })
-    }
   }
 
   return (

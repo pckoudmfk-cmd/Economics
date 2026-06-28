@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { EXERCISES } from '../../lib/exercises-data'
 import type { Exercise, FillBlankExercise, TransformExercise, ErrorCorrectionExercise } from '../../lib/types'
-import { useAuth } from '../../lib/auth'
-import { saveAttempt } from '../../lib/attempts'
 
 const exercises = EXERCISES.filter(e => e.module === 'grammar')
 
 function FillBlankExerciseView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as FillBlankExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
@@ -16,16 +13,6 @@ function FillBlankExerciseView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers,
-      })
-    }
   }
 
   function reset() { setAnswers(Array(content.sentences.length).fill('')); setChecked(false) }
@@ -104,7 +91,6 @@ function FillBlankExerciseView({ ex }: { ex: Exercise }) {
 }
 
 function TransformExerciseView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as TransformExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
@@ -115,16 +101,6 @@ function TransformExerciseView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers,
-      })
-    }
   }
 
   return (
@@ -176,7 +152,6 @@ function TransformExerciseView({ ex }: { ex: Exercise }) {
 }
 
 function ErrorCorrectionView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as ErrorCorrectionExercise
   const [answers, setAnswers] = useState<string[]>(content.sentences.map(s => s.wrong))
   const [checked, setChecked] = useState(false)
@@ -187,16 +162,6 @@ function ErrorCorrectionView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers,
-      })
-    }
   }
 
   return (
