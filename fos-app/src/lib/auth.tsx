@@ -77,19 +77,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) return error.message
-    if (data.user) {
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        email,
-        full_name: fullName.trim(),
-        role: 'student',
-        group_name: groupName.trim(),
-      })
-      if (profileError) return profileError.message
+    if (!data.user) return 'Регистрация отключена администратором. Обратитесь к преподавателю.'
+    const { error: profileError } = await supabase.from('profiles').insert({
+      id: data.user.id,
+      email,
+      full_name: fullName.trim(),
+      role: 'student',
+      group_name: groupName.trim(),
+    })
+    if (profileError) return profileError.message
 
-      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
-      if (signInError) return signInError.message
-    }
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    if (signInError) return signInError.message
     return null
   }
 
