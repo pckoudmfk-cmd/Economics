@@ -4,9 +4,7 @@ import { supabase } from './supabase'
 import type { UserProfile } from './types'
 
 export const TEACHER_CODE = 'PREP2024'
-const STUDENT_PASSWORD = 'FosStudent2024!'
-
-function studentCredentials(fullName: string, groupName: string) {
+function studentEmail(fullName: string, groupName: string) {
   const str = `${fullName.trim()}|${groupName.trim()}`.toLowerCase()
   let hash = 0
   for (let i = 0; i < str.length; i++) {
@@ -14,13 +12,14 @@ function studentCredentials(fullName: string, groupName: string) {
     hash = hash & hash
   }
   const id = Math.abs(hash).toString(36).padStart(10, '0')
-  return { email: `s_${id}@fos.local`, password: STUDENT_PASSWORD }
+  return `s_${id}@fos.local`
 }
 
 interface AuthContextValue {
   user: UserProfile | null
   loading: boolean
-  signInStudent: (fullName: string, groupName: string) => Promise<string | null>
+  signInStudent: (fullName: string, groupName: string, password: string) => Promise<string | null>
+  signUpStudent: (fullName: string, groupName: string, password: string) => Promise<string | null>
   signIn: (email: string, password: string) => Promise<string | null>
   signUp: (
     email: string,
@@ -69,20 +68,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(false)
   }
 
-  async function signInStudent(fullName: string, groupName: string): Promise<string | null> {
+  async function signUpStudent(fullName: string, groupName: string, password: string): Promise<string | null> {
     if (!fullName.trim()) return 'Введите ФИО'
     if (!groupName.trim()) return 'Введите номер группы'
+    if (password.length < 6) return 'Пароль должен содержать минимум 6 символов'
 
-    const { email, password } = studentCredentials(fullName, groupName)
+    const email = studentEmail(fullName, groupName)
 
-    // Try to sign in first (returning student)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (!error) return null
-
-    // Account doesn't exist — register automatically
-    const { data, error: signUpError } = await supabase.auth.signUp({ email, password })
-    if (signUpError) return signUpError.message
-
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    if (error) return error.message
     if (data.user) {
       const { error: profileError } = await supabase.from('profiles').insert({
         id: data.user.id,
@@ -96,7 +90,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
       if (signInError) return signInError.message
     }
+    return null
+  }
 
+  async function signInStudent(fullName: string, groupName: string, password: string): Promise<string | null> {
+    if (!fullName.trim()) return 'Введите ФИО'
+    if (!groupName.trim()) return 'Введите номер группы'
+
+    const email = studentEmail(fullName, groupName)
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) return 'Неверные данные. Проверьте ФИО, группу и пароль.'
     return null
   }
 
@@ -136,7 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInStudent, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signInStudent, signUpStudent, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   )
