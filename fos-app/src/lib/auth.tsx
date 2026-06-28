@@ -123,16 +123,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) return error.message
-    if (data.user) {
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        email,
-        full_name: fullName,
-        role,
-        group_name: null,
-      })
-      if (profileError) return profileError.message
-    }
+    if (!data.user) return 'Не удалось создать аккаунт. Попробуйте другой email.'
+
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    if (signInError) return signInError.message
+
+    const { error: profileError } = await supabase.from('profiles').insert({
+      id: data.user.id,
+      email,
+      full_name: fullName,
+      role,
+      group_name: null,
+    })
+    if (profileError) return profileError.message
     return null
   }
 
