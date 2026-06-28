@@ -78,6 +78,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) return error.message
     if (!data.user) return 'Регистрация отключена администратором. Обратитесь к преподавателю.'
+
+    // Sign in first so the session is active for the RLS-protected profile insert
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    if (signInError) return signInError.message
+
     const { error: profileError } = await supabase.from('profiles').insert({
       id: data.user.id,
       email,
@@ -87,8 +92,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
     if (profileError) return profileError.message
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
-    if (signInError) return signInError.message
     return null
   }
 
