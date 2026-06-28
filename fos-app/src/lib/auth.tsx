@@ -99,7 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const email = studentEmail(fullName, groupName)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) return 'Неверные данные. Проверьте ФИО, группу и пароль.'
+    if (error) return `Ошибка входа: ${error.message}`
     return null
   }
 
