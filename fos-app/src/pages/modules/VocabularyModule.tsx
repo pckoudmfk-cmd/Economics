@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { EXERCISES } from '../../lib/exercises-data'
-import type { Exercise, FillBlankExercise, VocabMatchExercise } from '../../lib/types'
-import { useAuth } from '../../lib/auth'
-import { saveAttempt } from '../../lib/attempts'
+import type { Exercise, FillBlankExercise, VocabMatchExercise, ReadingExercise } from '../../lib/types'
 
 const exercises = EXERCISES.filter(e => e.module === 'vocabulary')
 
 function VocabMatchView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as VocabMatchExercise
   const [selected, setSelected] = useState<{ term: string; def: string } | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({})
@@ -49,16 +46,6 @@ function VocabMatchView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers: matches,
-      })
-    }
   }
 
   return (
@@ -150,7 +137,6 @@ function VocabMatchView({ ex }: { ex: Exercise }) {
 }
 
 function FillBlankVocabView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as FillBlankExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
@@ -159,16 +145,6 @@ function FillBlankVocabView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers,
-      })
-    }
   }
 
   return (
@@ -227,6 +203,61 @@ function FillBlankVocabView({ ex }: { ex: Exercise }) {
   )
 }
 
+function ReadingView({ ex }: { ex: Exercise }) {
+  const content = ex.content as ReadingExercise
+  const [answers, setAnswers] = useState<string[]>(Array(content.questions.length).fill(''))
+  const [checked, setChecked] = useState(false)
+
+  return (
+    <div className="space-y-5">
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Текст для чтения</div>
+        <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">{content.text}</p>
+      </div>
+      <div className="space-y-4">
+        <div className="text-sm font-semibold text-slate-700">Ответьте на вопросы:</div>
+        {content.questions.map((q, i) => (
+          <div key={i} className="space-y-1.5">
+            <div className="text-sm text-slate-700">{i + 1}. {q.question}</div>
+            <textarea
+              disabled={checked}
+              value={answers[i]}
+              onChange={e => { const n = [...answers]; n[i] = e.target.value; setAnswers(n) }}
+              rows={2}
+              className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y disabled:bg-slate-50"
+              placeholder="Введите ответ..."
+            />
+            {checked && (
+              <div className="text-xs bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+                <span className="font-semibold text-blue-700">Образец ответа:</span>{' '}
+                <span className="text-blue-700">{q.answer}</span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-3 pt-2">
+        {!checked ? (
+          <button
+            onClick={() => setChecked(true)}
+            disabled={answers.some(a => !a.trim())}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50"
+          >
+            Показать образцы ответов
+          </button>
+        ) : (
+          <button
+            onClick={() => { setAnswers(Array(content.questions.length).fill('')); setChecked(false) }}
+            className="px-4 py-2 border border-slate-200 text-slate-600 rounded-lg text-sm hover:bg-slate-50"
+          >
+            Сбросить
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function VocabularyModule() {
   const [activeId, setActiveId] = useState<string | null>(null)
   const active = exercises.find(e => e.id === activeId)
@@ -239,9 +270,16 @@ export default function VocabularyModule() {
           <h2 className="text-xl font-bold text-slate-900">{active.title}</h2>
           <p className="text-sm text-slate-500 mt-1">{active.instructions}</p>
         </div>
+        {active.theory && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">Теория / Фон</div>
+            <p className="text-sm text-blue-900 leading-relaxed whitespace-pre-wrap">{active.theory}</p>
+          </div>
+        )}
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           {active.content.type === 'vocab_match' && <VocabMatchView ex={active} />}
           {active.content.type === 'fill_blank' && <FillBlankVocabView ex={active} />}
+          {active.content.type === 'reading' && <ReadingView ex={active} />}
         </div>
       </div>
     )

@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { EXERCISES } from '../../lib/exercises-data'
-import type { Exercise, FillBlankExercise, TransformExercise, ErrorCorrectionExercise } from '../../lib/types'
-import { useAuth } from '../../lib/auth'
-import { saveAttempt } from '../../lib/attempts'
+import type { Exercise, FillBlankExercise, TransformExercise, ErrorCorrectionExercise, MultipleChoiceExercise } from '../../lib/types'
 
 const exercises = EXERCISES.filter(e => e.module === 'grammar')
 
 function FillBlankExerciseView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as FillBlankExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
@@ -16,16 +13,6 @@ function FillBlankExerciseView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers,
-      })
-    }
   }
 
   function reset() { setAnswers(Array(content.sentences.length).fill('')); setChecked(false) }
@@ -104,7 +91,6 @@ function FillBlankExerciseView({ ex }: { ex: Exercise }) {
 }
 
 function TransformExerciseView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as TransformExercise
   const [answers, setAnswers] = useState<string[]>(Array(content.sentences.length).fill(''))
   const [checked, setChecked] = useState(false)
@@ -115,16 +101,6 @@ function TransformExerciseView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers,
-      })
-    }
   }
 
   return (
@@ -176,7 +152,6 @@ function TransformExerciseView({ ex }: { ex: Exercise }) {
 }
 
 function ErrorCorrectionView({ ex }: { ex: Exercise }) {
-  const { user } = useAuth()
   const content = ex.content as ErrorCorrectionExercise
   const [answers, setAnswers] = useState<string[]>(content.sentences.map(s => s.wrong))
   const [checked, setChecked] = useState(false)
@@ -187,16 +162,6 @@ function ErrorCorrectionView({ ex }: { ex: Exercise }) {
 
   async function check() {
     setChecked(true)
-    if (user) {
-      await saveAttempt({
-        userId: user.id,
-        exerciseId: ex.id,
-        module: ex.module,
-        score,
-        maxScore: ex.max_score,
-        answers,
-      })
-    }
   }
 
   return (
@@ -247,6 +212,72 @@ function ErrorCorrectionView({ ex }: { ex: Exercise }) {
   )
 }
 
+function MultipleChoiceView({ ex }: { ex: Exercise }) {
+  const content = ex.content as MultipleChoiceExercise
+  const [answers, setAnswers] = useState<string[]>(Array(content.questions.length).fill(''))
+  const [checked, setChecked] = useState(false)
+
+  const score = answers.filter((a, i) => a === content.questions[i].answer).length
+
+  return (
+    <div className="space-y-5">
+      {content.questions.map((q, i) => (
+        <div key={i} className="space-y-2">
+          <p className="text-sm text-slate-700 font-medium">{i + 1}. {q.question}</p>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {q.options.map(opt => {
+              const isSelected = answers[i] === opt.label
+              const isCorrect = checked && opt.label === q.answer
+              const isWrong = checked && isSelected && opt.label !== q.answer
+              return (
+                <button
+                  key={opt.label}
+                  disabled={checked}
+                  onClick={() => { const n = [...answers]; n[i] = opt.label; setAnswers(n) }}
+                  className={`text-left text-sm px-3 py-2 rounded-lg border transition-all ${
+                    isCorrect ? 'border-green-400 bg-green-50 text-green-800' :
+                    isWrong ? 'border-red-400 bg-red-50 text-red-800' :
+                    isSelected ? 'border-blue-500 bg-blue-50 text-blue-800' :
+                    'border-slate-200 hover:border-blue-300 text-slate-700'
+                  }`}
+                >
+                  <span className="font-semibold">{opt.label})</span> {opt.text}
+                </button>
+              )
+            })}
+          </div>
+          {checked && answers[i] !== q.answer && (
+            <div className="text-xs text-red-600">✗ Правильный ответ: {q.answer}</div>
+          )}
+        </div>
+      ))}
+      <div className="flex items-center gap-3 pt-2">
+        {!checked ? (
+          <button
+            onClick={() => setChecked(true)}
+            disabled={answers.some(a => !a)}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50"
+          >
+            Проверить ({answers.filter(Boolean).length}/{content.questions.length})
+          </button>
+        ) : (
+          <>
+            <div className={`text-sm font-semibold ${score === content.questions.length ? 'text-green-600' : 'text-amber-600'}`}>
+              {score} / {content.questions.length} верно
+            </div>
+            <button
+              onClick={() => { setAnswers(Array(content.questions.length).fill('')); setChecked(false) }}
+              className="px-4 py-2 border border-slate-200 text-slate-600 rounded-lg text-sm hover:bg-slate-50"
+            >
+              Попробовать снова
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function GrammarModule() {
   const [activeId, setActiveId] = useState<string | null>(null)
   const active = exercises.find(e => e.id === activeId)
@@ -261,10 +292,17 @@ export default function GrammarModule() {
           <h2 className="text-xl font-bold text-slate-900">{active.title}</h2>
           <p className="text-sm text-slate-500 mt-1">{active.instructions}</p>
         </div>
+        {active.theory && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">Теория</div>
+            <p className="text-sm text-blue-900 leading-relaxed whitespace-pre-wrap">{active.theory}</p>
+          </div>
+        )}
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           {active.content.type === 'fill_blank' && <FillBlankExerciseView ex={active} />}
           {active.content.type === 'transform' && <TransformExerciseView ex={active} />}
           {active.content.type === 'error_correction' && <ErrorCorrectionView ex={active} />}
+          {active.content.type === 'multiple_choice' && <MultipleChoiceView ex={active} />}
         </div>
         {active.rubric && (
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">

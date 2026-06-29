@@ -14,6 +14,7 @@ export interface Exercise {
   module: 'grammar' | 'vocabulary' | 'speaking' | 'writing' | 'dialogue'
   title: string
   instructions: string
+  theory?: string
   content: ExerciseContent
   rubric?: RubricCriteria[]
   max_score: number
@@ -57,6 +58,21 @@ export interface WritingExercise {
   word_count_max?: number
 }
 
+export interface ReadingExercise {
+  type: 'reading'
+  text: string
+  questions: { question: string; answer: string }[]
+}
+
+export interface MultipleChoiceExercise {
+  type: 'multiple_choice'
+  questions: {
+    question: string
+    options: { label: string; text: string }[]
+    answer: string
+  }[]
+}
+
 export type ExerciseContent =
   | FillBlankExercise
   | TransformExercise
@@ -64,6 +80,8 @@ export type ExerciseContent =
   | VocabMatchExercise
   | SpeakingExercise
   | WritingExercise
+  | ReadingExercise
+  | MultipleChoiceExercise
 
 export interface RubricCriteria {
   name: string

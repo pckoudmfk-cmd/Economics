@@ -1,5 +1,30 @@
 import type { Exercise } from './types'
 
+const wishConditionalsTheory = `I wish / If only / Mixed Conditionals
+
+• I wish + Past Perfect = сожаление о прошлом: I wish the bank had adopted a digital strategy earlier.
+• If only + Past Perfect = то же, с большей эмоциональностью: If only we had invested in cybersecurity!
+• Mixed Conditional: If + Past Perfect, would + Infinitive = условие в прошлом, результат в настоящем.
+  Пример: If we had invested two years ago, we wouldn't be facing this problem now.
+
+Типичные ошибки:
+  ✗ I wish I was more proactive (прошлое) → ✓ I wish I had been more proactive.
+  ✗ If he had better skills, he would have caught... → ✓ If he had had better skills, he would have caught...
+  ✗ they will be leading → ✓ they would be leading (Mixed: прошедшее условие + настоящий результат)`
+
+const nonFiniteTheory = `Non-Finite Forms of the Verb (Неличные формы глагола)
+
+• Infinitive (to + V): цель/намерение; после want / decide / need / allow sb to do; после It is + adj + to
+  The bank decided to adopt IFRS 9. | It is important to be accurate.
+• Gerund (V+ing): после предлогов (on, for, of, about); в роли подлежащего; после insist on / avoid / apologize for / consider / suggest
+  The manager insisted on reviewing the documents. | Maintaining records is essential.
+• Present Participle (V+ing): одновременное действие или определение к существительному
+  The data appearing in the balance sheet seems inconsistent.
+• Past Participle (V3): пассивное определение (действие совершено и описывает существительное)
+  The loan agreement, signed by both parties, came into effect.
+• Perfect Participle (Having + V3): предшествующее действие
+  Having completed the audit, the auditors submitted their report.`
+
 export const EXERCISES: Exercise[] = [
   // ─── GRAMMAR ───────────────────────────────────────────────────────────────
   {
@@ -106,6 +131,7 @@ export const EXERCISES: Exercise[] = [
     module: 'grammar',
     title: 'Смешанные условные / I wish / If only',
     instructions: 'Поставьте глаголы в нужную форму (смешанный условный, I wish, If only)',
+    theory: wishConditionalsTheory,
     max_score: 10,
     content: {
       type: 'fill_blank',
@@ -139,6 +165,7 @@ export const EXERCISES: Exercise[] = [
     module: 'grammar',
     title: 'Исправьте ошибки — I wish / условные предложения',
     instructions: 'Найдите и исправьте грамматическую ошибку в каждом предложении',
+    theory: wishConditionalsTheory,
     max_score: 10,
     content: {
       type: 'error_correction',
@@ -172,6 +199,7 @@ export const EXERCISES: Exercise[] = [
     module: 'grammar',
     title: 'Трансформация предложений — I wish / If / If only',
     instructions: 'Перефразируйте предложение, используя указанную конструкцию',
+    theory: wishConditionalsTheory,
     max_score: 10,
     content: {
       type: 'transform',
@@ -262,6 +290,169 @@ export const EXERCISES: Exercise[] = [
           text: 'This strategic decision was ___.',
           answer: 'mine',
           options: ['my', 'mine', 'me', 'I'],
+        },
+      ],
+    },
+    rubric: [{ name: 'Точность', max_points: 8, description: '2 балла за каждый верный ответ' }],
+  },
+
+  // New: Non-Finite Forms of the Verb
+  {
+    id: 'gr-nf-mc',
+    module: 'grammar',
+    title: 'Неличные формы глагола — тест с выбором ответа',
+    instructions: 'Определите вид неличной формы глагола в каждом предложении',
+    theory: nonFiniteTheory,
+    max_score: 8,
+    content: {
+      type: 'multiple_choice',
+      questions: [
+        {
+          question: 'Identify the non-finite form: "The bank\'s objective is to increase its loan portfolio by 15% this year."',
+          options: [
+            { label: 'A', text: 'Present Participle' },
+            { label: 'B', text: 'Gerund' },
+            { label: 'C', text: 'Infinitive' },
+            { label: 'D', text: 'Past Participle' },
+          ],
+          answer: 'C',
+        },
+        {
+          question: 'Identify the non-finite form: "Having completed the external audit, the auditors submitted their report to the board."',
+          options: [
+            { label: 'A', text: 'Perfect Gerund' },
+            { label: 'B', text: 'Perfect Participle' },
+            { label: 'C', text: 'Passive Infinitive' },
+            { label: 'D', text: 'Simple Infinitive' },
+          ],
+          answer: 'B',
+        },
+        {
+          question: 'Identify the non-finite form: "Maintaining accurate records is essential for banking compliance."',
+          options: [
+            { label: 'A', text: 'Gerund Phrase (subject)' },
+            { label: 'B', text: 'Infinitive Phrase' },
+            { label: 'C', text: 'Present Participial Phrase' },
+            { label: 'D', text: 'Conditional Clause' },
+          ],
+          answer: 'A',
+        },
+        {
+          question: 'Identify the non-finite form: "The loan agreement, signed by both parties, came into effect on 1 January."',
+          options: [
+            { label: 'A', text: 'Gerund' },
+            { label: 'B', text: 'Present Participle' },
+            { label: 'C', text: 'Past Participle' },
+            { label: 'D', text: 'Perfect Infinitive' },
+          ],
+          answer: 'C',
+        },
+      ],
+    },
+    rubric: [{ name: 'Точность', max_points: 8, description: '2 балла за каждый верный ответ' }],
+  },
+  {
+    id: 'gr-nf-error',
+    module: 'grammar',
+    title: 'Неличные формы глагола — исправьте ошибки',
+    instructions: 'Найдите и исправьте ошибку в использовании неличной формы',
+    theory: nonFiniteTheory,
+    max_score: 10,
+    content: {
+      type: 'error_correction',
+      sentences: [
+        {
+          wrong: 'The compliance manager insisted on to review the KYC documents again.',
+          correct: 'The compliance manager insisted on reviewing the KYC documents again.',
+        },
+        {
+          wrong: 'It is important for a bank accountant being diligent and accurate.',
+          correct: 'It is important for a bank accountant to be diligent and accurate.',
+        },
+        {
+          wrong: 'He wants the new core banking system to be install by Friday.',
+          correct: 'He wants the new core banking system to be installed by Friday.',
+        },
+        {
+          wrong: 'The bank decided adopting IFRS 9 ahead of the regulatory deadline.',
+          correct: 'The bank decided to adopt IFRS 9 ahead of the regulatory deadline.',
+        },
+        {
+          wrong: 'Regulations require banks disclosing their capital adequacy ratios annually.',
+          correct: 'Regulations require banks to disclose their capital adequacy ratios annually.',
+        },
+      ],
+    },
+    rubric: [{ name: 'Точность', max_points: 10, description: '2 балла за каждое верное исправление' }],
+  },
+  {
+    id: 'gr-nf-transform',
+    module: 'grammar',
+    title: 'Неличные формы глагола — трансформация предложений',
+    instructions: 'Перефразируйте предложение, используя указанную неличную форму',
+    theory: nonFiniteTheory,
+    max_score: 10,
+    content: {
+      type: 'transform',
+      sentences: [
+        {
+          original: 'I must complete the loan loss provision calculation. It is my priority.',
+          instruction: 'Combine using Gerund: "My priority is..."',
+          answer: 'My priority is completing the loan loss provision calculation.',
+        },
+        {
+          original: 'He completed the external audit. Then he submitted the report to the board.',
+          instruction: 'Use Perfect Participle to combine the sentences',
+          answer: 'Having completed the external audit, he submitted the report to the board.',
+        },
+        {
+          original: 'He claimed that he had already reconciled the interbank accounts.',
+          instruction: 'Rewrite using Perfect Infinitive: "He claimed..."',
+          answer: 'He claimed to have already reconciled the interbank accounts.',
+        },
+        {
+          original: 'Regulations require that banks disclose their capital adequacy ratios.',
+          instruction: 'Rewrite using Infinitive: "Regulations require banks..."',
+          answer: 'Regulations require banks to disclose their capital adequacy ratios.',
+        },
+        {
+          original: 'The bank processed the wire transfer. It is now settled.',
+          instruction: 'Rewrite using Past Participle: "The wire transfer,..."',
+          answer: 'The wire transfer, processed by the bank, is now settled.',
+        },
+      ],
+    },
+    rubric: [{ name: 'Точность', max_points: 10, description: '2 балла за каждое верное предложение' }],
+  },
+  {
+    id: 'gr-nf-fill',
+    module: 'grammar',
+    title: 'Неличные формы глагола — герундий или инфинитив',
+    instructions: 'Выберите правильную форму: герундий или инфинитив',
+    theory: nonFiniteTheory,
+    max_score: 8,
+    content: {
+      type: 'fill_blank',
+      sentences: [
+        {
+          text: 'The bank decided ___ IFRS 9 ahead of the regulatory deadline.',
+          answer: 'to adopt',
+          options: ['to adopt', 'adopting'],
+        },
+        {
+          text: '___ compliance with AML rules is a key part of the compliance officer\'s role.',
+          answer: 'Ensuring',
+          options: ['To ensure', 'Ensuring'],
+        },
+        {
+          text: 'The software allows you ___ regulatory reports automatically.',
+          answer: 'to generate',
+          options: ['to generate', 'generating'],
+        },
+        {
+          text: 'The compliance officer avoids ___ unencrypted client documents by email.',
+          answer: 'sending',
+          options: ['to send', 'sending'],
         },
       ],
     },
@@ -386,6 +577,184 @@ export const EXERCISES: Exercise[] = [
       ],
     },
     rubric: [{ name: 'Точность', max_points: 10, description: '2 балла за каждый верный ответ' }],
+  },
+
+  // New vocab_match exercises
+  {
+    id: 'voc-corp-finance',
+    module: 'vocabulary',
+    title: 'Корпоративные финансы — соотнеси термин с определением',
+    instructions: 'Сопоставьте каждый термин с его правильным определением. 15 пар.',
+    max_score: 15,
+    content: {
+      type: 'vocab_match',
+      words: [
+        { term: 'Corporate Finance', definition: 'The field dealing with how companies manage their funding, investment decisions, and shareholder value.' },
+        { term: 'Working Capital', definition: 'Current Assets minus Current Liabilities — a measure of short-term financial health.' },
+        { term: 'Capital Structure', definition: 'The mix of equity and debt a company uses to finance its assets and operations.' },
+        { term: 'Cost of Capital', definition: 'The rate a company must earn on its investments to satisfy its investors.' },
+        { term: 'Leverage', definition: 'The use of borrowed money to potentially increase investment returns.' },
+        { term: 'EBITDA', definition: 'Earnings Before Interest, Taxes, Depreciation, and Amortization — a measure of core operating profitability.' },
+        { term: 'Free Cash Flow', definition: 'Cash generated by operations minus capital expenditures — money truly available to investors.' },
+        { term: 'Dividend Policy', definition: 'The company\'s guidelines on how much profit to distribute to shareholders as dividends.' },
+        { term: 'IPO (Initial Public Offering)', definition: 'The first time a company sells shares to the public on a stock exchange.' },
+        { term: 'Debt Covenant', definition: 'A restriction in a loan agreement that the borrower must maintain certain financial ratios.' },
+        { term: 'Equity Financing', definition: 'Raising money by selling shares to investors, thereby diluting existing ownership.' },
+        { term: 'Debt Financing', definition: 'Raising money by borrowing (loans, bonds), which creates an obligation to repay with interest.' },
+        { term: 'Capital Budgeting', definition: 'The process of evaluating and selecting long-term investment projects.' },
+        { term: 'Return on Investment (ROI)', definition: 'A measure of profitability relative to the amount of money invested.' },
+        { term: 'Financial Distress', definition: 'The situation when a company struggles to meet its financial obligations.' },
+      ],
+    },
+    rubric: [{ name: 'Точность', max_points: 15, description: '1 балл за каждое верное сопоставление' }],
+  },
+  {
+    id: 'voc-pub-finance',
+    module: 'vocabulary',
+    title: 'Государственные финансы и банковский надзор — соотнеси',
+    instructions: 'Сопоставьте каждый термин с его правильным определением. 15 пар.',
+    max_score: 15,
+    content: {
+      type: 'vocab_match',
+      words: [
+        { term: 'Ministry of Finance', definition: 'The government department responsible for budget planning, tax policy, and public expenditure.' },
+        { term: 'Central Bank (Bank of Russia)', definition: 'The main monetary authority; issues currency, sets the key rate, regulates and supervises banks.' },
+        { term: 'Federal Treasury', definition: 'The government body responsible for executing the budget and managing treasury accounts of ministries.' },
+        { term: 'State Budget', definition: 'The overarching government financial plan showing expected revenues and expenditures.' },
+        { term: 'Budget Deficit', definition: 'The situation where government spending exceeds government revenues in a given period.' },
+        { term: 'Sovereign Debt', definition: 'The total amount of money the government owes to its creditors.' },
+        { term: 'Key Interest Rate', definition: 'The rate set by the central bank at which it lends to or borrows from commercial banks overnight.' },
+        { term: 'Currency Reserve', definition: 'Foreign currency and gold assets held by the central bank to support the national currency.' },
+        { term: 'Deposit Insurance Agency (DIA)', definition: 'A state organization that guarantees the safety of retail deposits up to a statutory limit.' },
+        { term: 'Banking Supervision', definition: 'The process by which the central bank monitors banks\' compliance with regulations and financial soundness.' },
+        { term: 'Monetary Policy', definition: 'A set of tools used by the central bank to control the money supply and inflation.' },
+        { term: 'Fiscal Policy', definition: 'Government decisions on taxation and public spending to influence the economy.' },
+        { term: 'Bank Lending Channel', definition: 'The mechanism by which central bank interest rate changes affect the economy through banks\' willingness to lend.' },
+        { term: 'Quantitative Easing (QE)', definition: 'A non-conventional monetary tool where the central bank purchases assets to inject liquidity into the economy.' },
+        { term: 'Macro-Prudential Policy', definition: 'Policies aimed at ensuring the stability of the financial system as a whole (e.g., loan-to-value limits, capital buffers).' },
+      ],
+    },
+    rubric: [{ name: 'Точность', max_points: 15, description: '1 балл за каждое верное сопоставление' }],
+  },
+  {
+    id: 'voc-banks',
+    module: 'vocabulary',
+    title: 'Виды банков — соотнеси',
+    instructions: 'Сопоставьте тип банка с его описанием. 8 пар.',
+    max_score: 8,
+    content: {
+      type: 'vocab_match',
+      words: [
+        { term: 'Universal Bank', definition: 'Combines commercial and investment banking; serves individuals, businesses, and institutional clients — a one-stop financial shop.' },
+        { term: 'Retail Bank', definition: 'Focused on serving individual consumers with savings accounts, personal loans, mortgages, and debit/credit cards.' },
+        { term: 'Investment Bank', definition: 'Assists corporations and governments with raising capital through stock and bond issuance, M&A, and structured finance.' },
+        { term: 'Central Bank', definition: 'The primary monetary authority: issues currency, sets key interest rates, supervises banks, manages foreign exchange reserves.' },
+        { term: 'Online Bank (Neobank)', definition: 'Operates via digital channels without an extensive branch network; offers competitive rates and low fees due to lower costs.' },
+        { term: 'Savings Bank', definition: 'Accepts savings deposits and provides mortgages; focused on encouraging home ownership and personal saving.' },
+        { term: 'Cooperative Bank', definition: 'Owned and operated by its members; provides banking services with a focus on community development and member benefit.' },
+        { term: 'Development Bank', definition: 'A government-backed institution that provides long-term financing for development projects — infrastructure, SMEs, strategic industries.' },
+      ],
+    },
+    rubric: [{ name: 'Точность', max_points: 8, description: '1 балл за каждое верное сопоставление' }],
+  },
+  {
+    id: 'voc-services',
+    module: 'vocabulary',
+    title: 'Банковские услуги — соотнеси',
+    instructions: 'Сопоставьте банковскую услугу с её описанием. 8 пар.',
+    max_score: 8,
+    content: {
+      type: 'vocab_match',
+      words: [
+        { term: 'Letter of Credit (L/C)', definition: 'A document from the buyer\'s bank guaranteeing payment to the seller\'s bank upon presentation of specified trade documents.' },
+        { term: 'Overdraft', definition: 'A short-term credit facility allowing a current account to go into a negative balance up to an agreed limit.' },
+        { term: 'Escrow Account', definition: 'A neutral third-party account holding funds until specified conditions of a transaction are met.' },
+        { term: 'Currency Swap', definition: 'A contract to exchange one currency for another at a set rate on a future date, used to hedge foreign exchange risk.' },
+        { term: 'Factoring', definition: 'A financial arrangement where a company sells its receivables (invoices) to a bank at a discount for immediate cash.' },
+        { term: 'Bank Guarantee', definition: 'A service where the bank undertakes to pay a third party on behalf of its client if the client fails to fulfill a contractual obligation.' },
+        { term: 'Safe Deposit Box', definition: 'A secure physical vault at a bank where customers can store valuable documents, jewelry, or other valuables.' },
+        { term: 'Correspondent Banking', definition: 'A relationship between two banks in different countries enabling transactions to be conducted on each other\'s behalf across borders.' },
+      ],
+    },
+    rubric: [{ name: 'Точность', max_points: 8, description: '1 балл за каждое верное сопоставление' }],
+  },
+
+  // New reading exercises (from FOS exam tickets)
+  {
+    id: 'voc-read-russia',
+    module: 'vocabulary',
+    title: 'Чтение: Россия в мировой экономике',
+    instructions: 'Прочитайте текст и ответьте на вопросы развёрнутыми предложениями',
+    max_score: 15,
+    content: {
+      type: 'reading',
+      text: `Russia is one of the world's largest economies, ranking among the top ten by GDP. The country is a major exporter of natural resources, including oil, gas, metals, and agricultural products. Russia is a member of several international organizations, including BRICS and the Shanghai Cooperation Organisation.
+
+Russia's banking sector is regulated by the Central Bank of Russia (CBR), which controls monetary policy, supervises commercial banks, and maintains financial stability. The Ruble (RUB) is the national currency.`,
+      questions: [
+        { question: 'What is Russia\'s position in the world by GDP?', answer: 'Russia ranks among the top ten largest economies in the world by GDP.' },
+        { question: 'What does Russia mainly export?', answer: 'Russia mainly exports natural resources: oil, gas, metals, and agricultural products.' },
+        { question: 'What is the role of the Central Bank of Russia?', answer: 'The CBR controls monetary policy, supervises commercial banks, and maintains financial stability.' },
+      ],
+    },
+    rubric: [{ name: 'Понимание текста', max_points: 15, description: '5 баллов за каждый полный и точный ответ' }],
+  },
+  {
+    id: 'voc-read-banking',
+    module: 'vocabulary',
+    title: 'Чтение: Двухуровневая банковская система России',
+    instructions: 'Прочитайте текст и ответьте на вопросы развёрнутыми предложениями',
+    max_score: 15,
+    content: {
+      type: 'reading',
+      text: `Russia has a two-tier banking system. The first tier is the Central Bank of Russia (CBR), which sets monetary policy, issues currency, and supervises all financial institutions. The second tier consists of commercial banks — both state-owned (such as Sberbank and VTB) and private banks.
+
+Commercial banks offer a range of services: accepting deposits, issuing loans, performing currency exchange, and processing payments. Banks must comply with Basel III capital requirements and KYC/AML regulations to ensure financial stability and prevent money laundering.`,
+      questions: [
+        { question: 'Describe the two-tier banking system of Russia.', answer: 'The first tier is the CBR (sets monetary policy, issues currency, supervises banks). The second tier consists of commercial banks — state-owned (Sberbank, VTB) and private banks.' },
+        { question: 'Name two state-owned banks mentioned in the text.', answer: 'Sberbank and VTB are the two state-owned banks mentioned in the text.' },
+        { question: 'What regulations must banks comply with?', answer: 'Banks must comply with Basel III capital requirements and KYC/AML regulations.' },
+      ],
+    },
+    rubric: [{ name: 'Понимание текста', max_points: 15, description: '5 баллов за каждый полный и точный ответ' }],
+  },
+  {
+    id: 'voc-read-payments',
+    module: 'vocabulary',
+    title: 'Чтение: Международные расчёты и SWIFT',
+    instructions: 'Прочитайте текст и ответьте на вопросы развёрнутыми предложениями',
+    max_score: 15,
+    content: {
+      type: 'reading',
+      text: `International settlements are payments between residents of different countries for goods, services, and financial transactions. The main forms of international settlement are: bank transfer (wire transfer), letter of credit (L/C), collection, and open account.
+
+SWIFT (Society for Worldwide Interbank Financial Telecommunication) is the global messaging network used by banks to securely transmit payment instructions. A SWIFT message contains information about the sending bank, receiving bank, amount, currency, and purpose of payment.`,
+      questions: [
+        { question: 'What are the main forms of international settlement?', answer: 'The main forms are: bank transfer (wire transfer), letter of credit (L/C), collection, and open account.' },
+        { question: 'What is SWIFT and what does it do?', answer: 'SWIFT is the global messaging network used by banks to securely transmit payment instructions between banks worldwide.' },
+        { question: 'What information does a SWIFT message contain?', answer: 'A SWIFT message contains: sending bank, receiving bank, amount, currency, and purpose of payment.' },
+      ],
+    },
+    rubric: [{ name: 'Понимание текста', max_points: 15, description: '5 баллов за каждый полный и точный ответ' }],
+  },
+  {
+    id: 'voc-read-products',
+    module: 'vocabulary',
+    title: 'Чтение: Банковские продукты и обслуживание клиентов',
+    instructions: 'Прочитайте текст и ответьте на вопросы развёрнутыми предложениями',
+    max_score: 15,
+    content: {
+      type: 'reading',
+      text: `Banks offer a wide range of products for individual clients: savings accounts, current accounts, personal loans, mortgages, credit cards, debit cards, and insurance products. Corporate clients can access trade finance, cash management, and investment banking services.
+
+Effective customer service is essential in banking. Relationship managers build long-term connections with clients, understand their financial needs, and recommend suitable products. Handling complaints professionally and respecting customer confidentiality are key responsibilities.`,
+      questions: [
+        { question: 'Name at least four banking products for individual clients.', answer: 'Savings accounts, current accounts, personal loans, mortgages, credit cards, debit cards, and insurance products.' },
+        { question: 'What services do banks offer to corporate clients?', answer: 'Corporate clients can access trade finance, cash management, and investment banking services.' },
+        { question: 'What is the role of a relationship manager?', answer: 'Relationship managers build long-term connections with clients, understand their financial needs, and recommend suitable products.' },
+      ],
+    },
+    rubric: [{ name: 'Понимание текста', max_points: 15, description: '5 баллов за каждый полный и точный ответ' }],
   },
 
   // ─── SPEAKING ──────────────────────────────────────────────────────────────
@@ -562,6 +931,210 @@ export const EXERCISES: Exercise[] = [
     ],
   },
 
+  // New speaking exercises
+  {
+    id: 'sp-grammar-quiz-1',
+    module: 'speaking',
+    title: 'Устный грамматический квиз — Часть 1: Времена глагола',
+    instructions: 'Преподаватель задаёт вопросы из списка ниже. Студент даёт полный грамматически верный ответ, используя требуемую глагольную форму.',
+    max_score: 70,
+    content: {
+      type: 'speaking',
+      topic: 'Grammar Oral Quiz: Active Voice Tenses in Banking Context',
+      duration_min: 5,
+      required_vocab: ['commercial bank', 'monetary policy', 'interest rate', 'banking operations', 'credit facility'],
+      required_tenses: ['Present Simple', 'Past Continuous', 'Present Perfect', 'Future Simple', 'Past Simple', 'Present Perfect Continuous'],
+      structure_hints: [
+        '(Present Simple) What does a commercial bank usually offer to its clients?',
+        '(Past Continuous) What were you studying yesterday at 3 p.m. related to banking?',
+        '(Present Perfect) Have you ever opened a bank account in a foreign currency? Why / why not?',
+        '(Future Simple) What will you do after graduating if a bank offers you a job?',
+        '(Past Simple) When did Russia\'s Central Bank last change the key interest rate?',
+        '(Present Perfect Continuous) How long have you been learning English for your professional career?',
+      ],
+    },
+    rubric: [
+      { name: 'Грамматическая точность', max_points: 70, description: 'Верное использование требуемого грамматического времени в полном ответе' },
+      { name: 'Беглость и уверенность', max_points: 20, description: 'Способность ответить без долгих пауз' },
+      { name: 'Понимание вопроса', max_points: 10, description: 'Правильное понимание и релевантность ответа' },
+    ],
+  },
+  {
+    id: 'sp-grammar-quiz-2',
+    module: 'speaking',
+    title: 'Устный грамматический квиз — Часть 2: Артикли и существительные',
+    instructions: 'Преподаватель задаёт вопросы из списка. Студент отвечает полным предложением, демонстрируя знание артиклей и исчисляемости.',
+    max_score: 80,
+    content: {
+      type: 'speaking',
+      topic: 'Grammar Oral Quiz: Articles and Countable/Uncountable Nouns in Banking',
+      duration_min: 5,
+      required_vocab: ['credit', 'currency', 'Central Bank', 'Sberbank', 'bank transaction'],
+      structure_hints: [
+        'Use the word "credit" in a banking sentence. Is it countable or uncountable here? What article should be used?',
+        'Is the word "money" countable or uncountable? Use it correctly in a sentence without the article "a".',
+        'Make a sentence about "the Central Bank" and "Sberbank". Why do we say "the Central Bank" but not "the Sberbank"?',
+        'Use "a number of" and "the number of" in two different sentences about bank clients.',
+        'Use the word "currency" in a sentence. Is it countable or uncountable? What determiner can be used?',
+      ],
+    },
+    rubric: [
+      { name: 'Грамматическая точность', max_points: 80, description: 'Верное использование артиклей, понимание исчисляемости' },
+      { name: 'Скорость и уверенность', max_points: 20, description: 'Способность ответить без чрезмерных колебаний' },
+    ],
+  },
+  {
+    id: 'sp-edu-quiz',
+    module: 'speaking',
+    title: 'Устный квиз: Образование и банковская карьера',
+    instructions: 'Преподаватель задаёт по 2–3 вопроса каждому студенту. Даётся полный, грамматически правильный ответ.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Education and Professional Development in Banking',
+      duration_min: 5,
+      required_vocab: ['major in finance', 'vocational education', 'compulsory internship', 'scholarship', 'professional certification', 'CFA', 'ACCA', 'drop-out', 'placement'],
+      structure_hints: [
+        'Vocabulary questions: What does it mean to major in finance? | What is a compulsory internship and why is it important? | What is a drop-out, and what career risks might this create?',
+        'Grammar questions: Transform into reported speech: "I am studying international banking," he said. | Fill in: "This textbook isn\'t mine; it\'s ___." | Join with a relative pronoun: "That is the professor. I told you about her research in digital finance."',
+        'Answer all questions with complete sentences',
+        'Use Present Perfect Continuous for a long-term study activity, Future Simple for career plans',
+      ],
+    },
+    rubric: [
+      { name: 'Точность лексики и грамматики', max_points: 70, description: 'Правильное использование лексики и грамматических форм' },
+      { name: 'Беглость и уверенность', max_points: 20, description: 'Способность ответить без долгих колебаний' },
+      { name: 'Понимание вопроса', max_points: 10, description: 'Понимание и релевантность ответа' },
+    ],
+  },
+  {
+    id: 'sp-salary-negotiation',
+    module: 'speaking',
+    title: 'Деловая игра: Переговоры о зарплате и условиях труда',
+    instructions: 'Ролевая игра. Кандидат и HR-менеджер обсуждают условия трудоустройства на должность «Специалист банковских операций».',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Salary and Benefits Negotiation at a Bank',
+      role: 'Candidate or HR Manager',
+      duration_min: 5,
+      required_vocab: ['salary', 'benefits', 'DMS (voluntary medical insurance)', 'professional certification', 'ACCA', 'flexible hours', 'probation period', 'salary review', 'working capital'],
+      structure_hints: [
+        'Candidate: desired salary 50,000 RUB | completed certified banking software course (1C: Bank) | 15% more transactions than average intern | wants DMS, ACCA reimbursement, flexible hours',
+        'HR Manager: approved range 43,000–47,000 RUB | standard benefits: social insurance, 28 days leave | DMS after 6 months | professional development budget | flexible start 8:00–10:00 | can offer max of range + salary review after probation',
+        'Candidate: prepare arguments justifying your expectations; be ready to negotiate alternatives',
+        'HR: be flexible within the approved framework; explain what you can and cannot offer',
+      ],
+    },
+    rubric: [
+      { name: 'Выполнение роли и переговорные навыки', max_points: 40, description: 'Соблюдение роли, качество аргументов, способность к компромиссу' },
+      { name: 'Профессиональная лексика', max_points: 30, description: 'Использование деловой и банковской терминологии' },
+      { name: 'Беглость и коммуникация', max_points: 30, description: 'Естественность речи, профессиональный тон' },
+    ],
+  },
+  {
+    id: 'sp-dilemma',
+    module: 'speaking',
+    title: 'Деловая игра: Разрешение профессиональной дилеммы в банке',
+    instructions: 'Группы по 2–3 человека обсуждают профессиональную дилемму. Затем каждая группа представляет своё решение и обоснование.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Resolving a Professional Dilemma: Non-Compliant Loan Application',
+      duration_min: 10,
+      required_vocab: ['credit policy', 'debt-to-income ratio', 'AML/KYC rules', 'CBR requirements', 'reputational risk', 'banking regulations', 'compliance', 'credit committee', 'SAR (Suspicious Activity Report)'],
+      structure_hints: [
+        'Scenario: Senior colleague asks you to approve a loan that exceeds the debt-to-income ratio threshold, suggesting you adjust the reported income figure',
+        'Discuss: ethical and professional obligations | potential legal consequences (CBR, AML/KYC violations, reputational risk) | correct procedure for non-compliant loan applications | diplomatic way to refuse your colleague',
+        'After group discussion (10–15 min): each group presents its solution and reasoning',
+        'Assessment focuses on: analysis depth, reasoning, knowledge of regulations, teamwork and presentation',
+      ],
+    },
+    rubric: [
+      { name: 'Глубина анализа', max_points: 30, description: 'Понимание всех аспектов: этического, правового, профессионального' },
+      { name: 'Аргументация', max_points: 30, description: 'Логическое обоснование выбранного решения' },
+      { name: 'Знание регуляторных норм', max_points: 20, description: 'Ссылки на корректные банковские процедуры и нормы compliance' },
+      { name: 'Командная работа и презентация', max_points: 20, description: 'Ясность изложения, умение работать в группе' },
+    ],
+  },
+  {
+    id: 'sp-tech-achievement',
+    module: 'speaking',
+    title: 'Презентация: Технологические достижения в банкинге',
+    instructions: 'Подготовьте и представьте короткую презентацию (3–4 мин) об одном технологическом достижении, существенно повлиявшем на банковскую отрасль.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'A Technological Achievement That Transformed Banking',
+      duration_min: 3,
+      required_vocab: ['breakthrough', 'innovation', 'cutting-edge', 'FinTech', 'disruption', 'digital transformation', 'contactless', 'blockchain', 'to streamline', 'cybersecurity', 'scalability', 'adoption'],
+      structure_hints: [
+        'Introduction: Name the innovation and state why you chose it',
+        'Description: Explain what it is and how it works in simple terms',
+        'Impact on Banking: How has this innovation changed bank operations, client interaction, or financial transactions?',
+        'Inventor/Developer: Briefly mention the key inventor, team, or company',
+        'Conclusion: Summarize and give your personal view on its overall significance for the future of finance',
+        'Possible topics: blockchain, contactless payments (NFC), open banking/APIs, AI in credit scoring, biometric authentication, CBDCs, robo-advisors',
+      ],
+    },
+    rubric: [
+      { name: 'Содержание и структура', max_points: 40, description: 'Ясность, логическая структура, полнота раскрытия темы' },
+      { name: 'Использование языка', max_points: 30, description: 'Верное использование тематической лексики, грамматика, беглость' },
+      { name: 'Подача и слайды', max_points: 30, description: 'Ясность речи, зрительный контакт, использование наглядных материалов' },
+    ],
+  },
+  {
+    id: 'sp-outstanding-figures',
+    module: 'speaking',
+    title: 'Устный доклад: Выдающиеся люди в банковской сфере',
+    instructions: 'Подготовьте и представьте 3–4-минутный доклад о выдающейся личности в вашей будущей профессии.',
+    max_score: 14,
+    content: {
+      type: 'speaking',
+      topic: 'Outstanding People in Banking and Finance',
+      duration_min: 3,
+      required_vocab: ['pioneer', 'double-entry bookkeeping', 'to formulate a principle', 'to lay the groundwork', 'financial integrity', 'to adhere to a standard', 'financial oversight', 'to innovate', 'corporate transparency', 'regulatory framework', 'to ensure compliance', 'monetary policy', 'central banking', 'investment strategy', 'financial inclusion'],
+      structure_hints: [
+        'Suggested figures: Luca Pacioli, J.P. Morgan, Henry Thornton, Mayer Amschel Rothschild, Herman Gref, Elvira Nabiullina, Warren Buffett',
+        'Structure: Introduction → Brief biography → Key contributions to banking/finance → Impact on the profession and economy → Personal reflection on lessons',
+        'Language: Use at least 8–10 terms from active vocabulary',
+        'Grammar: Use Participle I constructions ("Having founded the first central bank...") and Gerunds ("His work involved reforming the entire regulatory framework...")',
+      ],
+    },
+    rubric: [
+      { name: 'Содержание и структура', max_points: 4, description: 'Тема полностью раскрыта, отличная логическая структура, убедительные детали' },
+      { name: 'Язык и лексика', max_points: 4, description: 'Широкое и точное использование активной лексики, верное использование причастий и герундия' },
+      { name: 'Произношение и беглость', max_points: 3, description: 'Чёткая, хорошо выверенная, легко воспринимаемая речь' },
+      { name: 'Невербальная коммуникация', max_points: 3, description: 'Уверенная подача, хороший зрительный контакт' },
+    ],
+  },
+  {
+    id: 'sp-skills-competition',
+    module: 'speaking',
+    title: 'Дискуссия: Участие в конкурсе профессионального мастерства',
+    instructions: 'Групповая дискуссия. Представьте, что вас выбрали участвовать в национальном конкурсе банковских операций или финансового анализа. Обсудите вопросы ниже.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Skills Competition: Motivation, Preparation, and Professional Growth',
+      duration_min: 10,
+      required_vocab: ['professional skills', 'competence', 'competitive performance', 'milestone', 'gap analysis', 'mentor', 'benchmark', 'skill validation', 'career advancement', 'credit analysis', 'foreign exchange operations'],
+      structure_hints: [
+        'Initial Reaction: What would be your primary motivation? How does this align with your long-term career path?',
+        'Preparation Phase: What is your first step? How do you analyze the gap between your current skills and competition requirements? Which specific banking skills would you prioritize?',
+        'Competition Experience: How would you manage stress during time-constrained tasks? How would you demonstrate both technical excellence and soft skills?',
+        'Outcomes and Reflection: What value would participation bring regardless of the result? How could you leverage the experience in a job interview?',
+        'Use conditional structures: "If I participated..., I would..." / "If I had more time to prepare, I would have..."',
+      ],
+    },
+    rubric: [
+      { name: 'Релевантность и глубина ответов', max_points: 40, description: 'Содержательность и связность ответов на каждый из вопросов' },
+      { name: 'Активное использование лексики', max_points: 30, description: 'Точное и уместное использование тематических терминов' },
+      { name: 'Беглость и связность речи', max_points: 20, description: 'Естественность, логичность, темп речи' },
+      { name: 'Использование условных конструкций', max_points: 10, description: 'Корректное применение условных предложений в контексте' },
+    ],
+  },
+
   // ─── WRITING ───────────────────────────────────────────────────────────────
   {
     id: 'wr-email-1',
@@ -664,6 +1237,98 @@ Relationship Manager`,
       { name: 'Соответствие формату и тон', max_points: 5, description: 'Формальный, профессиональный тон; стандартная структура письма-претензии' },
       { name: 'Содержание', max_points: 5, description: 'Все четыре пункта отражены полно и чётко' },
       { name: 'Язык', max_points: 5, description: 'Правильное использование деловой лексики и грамматики' },
+    ],
+  },
+
+  // New writing exercises
+  {
+    id: 'wr-regionbank',
+    module: 'writing',
+    title: 'Письменный анализ: Годовой отчёт RegionBank',
+    instructions: 'Вы — младший финансовый аналитик. Подготовьте краткий письменный анализ (300–400 слов) на основе данных RegionBank.',
+    max_score: 20,
+    content: {
+      type: 'writing',
+      prompt: `Write a financial analysis (300–400 words) for RegionBank PJSC using the data below. Answer all four questions:
+
+1. Performance Evaluation: Based on the Chairman's letter, what were the main achievements and challenges? If Net Interest Income = 2.8 billion RUB and Total Revenue = 4.1 billion RUB, what is the NII contribution? What does this tell you about the bank's core business?
+
+2. Financial Health: If Total Assets = 85 billion RUB, Total Liabilities = 72 billion RUB, what is the equity? Calculate the leverage ratio. The NPL ratio rose from 3.2% to 5.1% — what does this indicate about credit risk management?
+
+3. Strategic Outlook: What are the bank's stated future strategies (improving asset quality, expanding digital channels, strengthening capital base)? Evaluate their feasibility given the financial data.
+
+4. Recommendation: Provide one specific recommendation based on your analysis.
+
+Key data from the Chairman's letter: retail lending portfolio grew 12%; mobile banking app has 340,000 active users; corporate loan portfolio quality deteriorated; NPL ratio rose from 3.2% to 5.1%.
+
+Use banking/financial terminology: NPL, Net Interest Income, Capital Adequacy, leverage ratio, provisions, loan portfolio.`,
+      word_count_min: 300,
+      word_count_max: 400,
+    },
+    rubric: [
+      { name: 'Точность анализа и терминология', max_points: 8, description: 'Верное использование банковских/финансовых терминов, правильные расчёты' },
+      { name: 'Глубина анализа', max_points: 6, description: 'Логичная интерпретация данных NPL, NII, капитала' },
+      { name: 'Структура и профессионализм', max_points: 4, description: 'Логичное изложение, профессиональный стиль' },
+      { name: 'Практичность рекомендации', max_points: 2, description: 'Конкретность и обоснованность рекомендации' },
+    ],
+  },
+  {
+    id: 'wr-starterbank',
+    module: 'writing',
+    title: 'Практическое задание: Финансовые отчёты StarterBank',
+    instructions: 'Заполните упрощённые финансовые отчёты StarterBank и напишите краткое профессиональное описание (4–5 предложений).',
+    max_score: 20,
+    content: {
+      type: 'writing',
+      prompt: `Using the data below, complete the Balance Sheet and Income Statement for StarterBank, then write a short professional paragraph (4–5 sentences) describing the bank's financial position and performance.
+
+DATA FOR STARTERBANK (in millions of RUB):
+Balance Sheet: Cash and CBR balances: 1,200 | Net Loans to Clients: 8,500 | Securities Portfolio: 3,100 | Fixed Assets and Intangibles: 900 | Client Deposits: 10,200 | Interbank Borrowings: 2,100 | Share Capital: 800 | Retained Earnings: 600
+
+Income Statement: Interest Income: 1,950 | Interest Expense: 890 | Fee and Commission Income: 420 | Operating Expenses (Staff + Admin): 780 | Loan Loss Provisions: 340
+
+TASKS:
+Part A — Balance Sheet: List all assets, total them. List all liabilities and equity, total them. Verify Assets = Liabilities + Equity.
+Part B — Income Statement: Calculate Net Interest Income (NII = Interest Income − Interest Expense), Total Operating Income (NII + Fee Income), and Net Profit (Total Operating Income − Operating Expenses − Provisions).
+Part C — Descriptive Paragraph: Use these standard phrases: "The bank's balance sheet reflects a loan-to-deposit ratio of..." | "The bank generated net interest income of..." | "Profitability was impacted by significant provisioning charges, resulting in a net profit of..."`,
+      word_count_min: 100,
+    },
+    rubric: [
+      { name: 'Точность расчётов', max_points: 8, description: 'Верное заполнение баланса и отчёта о прибылях и убытках; Assets = Liabilities + Equity' },
+      { name: 'Структура отчётов', max_points: 4, description: 'Правильное форматирование и группировка статей' },
+      { name: 'Профессиональная терминология', max_points: 4, description: 'Верное и беглое использование банковских терминов' },
+      { name: 'Описательный абзац', max_points: 4, description: 'Способность делать базовые выводы из подготовленных данных' },
+    ],
+  },
+  {
+    id: 'wr-hsbc',
+    module: 'writing',
+    title: 'Письменный анализ: Отчётность HSBC Holdings plc (2023)',
+    instructions: 'Используя данные годового отчёта HSBC, ответьте на аналитические вопросы в письменной форме.',
+    max_score: 20,
+    content: {
+      type: 'writing',
+      prompt: `Analyze the simplified financial data from HSBC Holdings plc (2023) and answer all four questions in writing (200–300 words total).
+
+HSBC DATA (2023):
+Income Statement: Net Interest Income: $35.8bn | Total Revenue (Net Operating Income): $66.1bn | Loan Impairment Charges: $(3.4)bn | Total Operating Expenses: $(32.1)bn | Net Profit: $22.4bn
+Balance Sheet: Total Assets: $3,038.7bn | Customer Accounts (Deposits): $1,611.4bn | Total Equity: $198.8bn | Loans and Advances to Customers: $938.5bn
+
+QUESTIONS:
+1. Calculate HSBC's Net Interest Margin contribution: NII as a % of Total Revenue. What does this share tell you about HSBC's business model?
+2. Calculate the Cost-to-Income ratio (Operating Expenses ÷ Total Revenue). How does this benchmark against typical industry norms (55–65%)?
+3. Calculate the Loan-to-Deposit ratio (Loans ÷ Customer Deposits). Is HSBC more reliant on deposits or market funding?
+4. Calculate the Equity-to-Assets ratio (Total Equity ÷ Total Assets). What does this imply about the bank's capital cushion?
+
+Use appropriate banking terminology in your answers: NII, NIM, cost-to-income ratio, loan-to-deposit ratio, capital adequacy, leverage, business model.`,
+      word_count_min: 200,
+      word_count_max: 300,
+    },
+    rubric: [
+      { name: 'Точность расчётов', max_points: 8, description: 'Верные финансовые коэффициенты для каждого вопроса' },
+      { name: 'Интерпретация', max_points: 6, description: 'Корректная интерпретация коэффициентов и их банковских последствий' },
+      { name: 'Использование терминологии', max_points: 4, description: 'Уместное использование профессиональной банковской лексики' },
+      { name: 'Структура и связность', max_points: 2, description: 'Логичное и чёткое изложение анализа' },
     ],
   },
 
@@ -805,6 +1470,536 @@ Relationship Manager`,
       { name: 'Содержание и критическое мышление', max_points: 40, description: 'Выявление и анализ различных типов рисков, качество предложенных решений' },
       { name: 'Коммуникация и взаимодействие', max_points: 40, description: 'Активное участие, реакция на аргументы других участников' },
       { name: 'Язык', max_points: 20, description: 'Профессиональная лексика, грамматика, беглость' },
+    ],
+  },
+  // New dialogue exercises
+  {
+    id: 'dia-ifrs-ras',
+    module: 'dialogue',
+    title: 'Дискуссия: МСФО vs. РСБУ в банковском секторе',
+    instructions: 'Групповая дискуссия об основных различиях между МСФО и РСБУ применительно к банковскому сектору.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Key Differences Between IFRS and Russian Accounting Standards (RAS/RSBU)',
+      duration_min: 15,
+      required_vocab: ['IFRS', 'RAS', 'provisions', 'loan loss reserve', 'expected credit loss', 'ECL model', 'impairment', 'disclosure', 'fair value', 'deferred tax', 'capital adequacy'],
+      structure_hints: [
+        'What are the fundamental philosophical differences between IFRS (principles-based, global) and RAS (rules-based, tax-oriented)?',
+        'Compare loan loss provisions: IFRS 9 ECL model (expected credit loss) vs. RAS incurred loss model. How does this affect reported profit and capital?',
+        'Why might a foreign investor or correspondent bank prefer IFRS statements when evaluating a Russian bank?',
+        'What practical challenges does an accountant face when preparing two sets of financial statements simultaneously?',
+        'Use professional vocabulary: IFRS, RAS, provisions, expected credit loss, impairment, disclosure, fair value',
+      ],
+    },
+    rubric: [
+      { name: 'Техническая точность и глубина', max_points: 40, description: 'Точность и глубина технических знаний' },
+      { name: 'Ясность и структура аргументов', max_points: 30, description: 'Ясность и структурированность аргументов' },
+      { name: 'Взаимодействие с противоположными точками зрения', max_points: 20, description: 'Умение реагировать на позиции других участников' },
+      { name: 'Профессиональная лексика', max_points: 10, description: 'Эффективное использование бухгалтерской и банковской терминологии' },
+    ],
+  },
+  {
+    id: 'dia-creative-accounting',
+    module: 'dialogue',
+    title: 'Круглый стол: Творческая отчётность — где заканчивается оптимизация?',
+    instructions: 'Разбор кейса «RegioCredit Bank» и групповое обсуждение. Каждое предложение менеджмента оценивается по степени допустимости.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Ethical Dilemma Roundtable: Creative Accounting at RegioCredit Bank',
+      duration_min: 20,
+      required_vocab: ['capital adequacy ratio (CAR)', 'IFRS 9', 'loan loss provisions', 'Stage 1', 'Stage 2', 'NPL', 'sale-and-leaseback', 'revenue recognition', 'internal auditor', 'CBR', 'reputational risk'],
+      structure_hints: [
+        'Case: RegioCredit Bank is close to breaching its minimum CAR of 8%. Three proposals are on the table:',
+        '1. Reclassify 50 loans from "doubtful" (Stage 2) to "standard" (Stage 1) — reduces provisions, inflates reported capital',
+        '2. Sale-and-leaseback of HQ building to a related entity at inflated price — books gain as immediate income',
+        '3. Delay recognition of several large NPLs until the next reporting period',
+        'For each proposal: aggressive-but-acceptable / creative accounting / potential fraud? Which accounting principles are violated?',
+        'What are the professional and ethical responsibilities of the internal auditor? What are the potential CBR/auditor consequences?',
+        'As a group: propose an ethical solution to the capital adequacy shortfall',
+      ],
+    },
+    rubric: [
+      { name: 'Анализ креативного учёта', max_points: 30, description: 'Умение идентифицировать и анализировать манипуляции с отчётностью' },
+      { name: 'Понимание регуляторных норм', max_points: 30, description: 'Связь между бухгалтерскими действиями, этикой и банковским регулированием' },
+      { name: 'Качество этической аргументации', max_points: 25, description: 'Качество этического анализа и принятие решений' },
+      { name: 'Командная работа и изложение', max_points: 15, description: 'Сотрудничество и чёткость изложения идей' },
+    ],
+  },
+  {
+    id: 'dia-fintech-ethics',
+    module: 'dialogue',
+    title: 'Групповая дискуссия: Этика и будущее финансовых технологий',
+    instructions: 'Модерируемая дискуссия (4–5 студентов) об этических последствиях и перспективах инноваций в банковской сфере.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Ethics and the Future of Financial Technology',
+      duration_min: 15,
+      required_vocab: ['disruptive technology', 'regulatory sandbox', 'financial inclusion', 'decentralization', 'data privacy', 'algorithmic bias', 'digital sovereignty', 'DeFi', 'cryptocurrency', 'AI credit scoring'],
+      structure_hints: [
+        'Choose one prompt: (1) AI in credit scoring — efficiency vs. discrimination against certain borrower groups | (2) Cryptocurrency and DeFi — should governments regulate or restrict? | (3) Banking exhibitions — are they still relevant for genuine innovation?',
+        'Prepare your initial position and arguments in advance',
+        'Use discussion phrases: "In my opinion...", "I see your point, however...", "Another aspect to consider is...", "Could you elaborate on...?"',
+        'Use topic vocabulary: disruptive technology, regulatory sandbox, financial inclusion, decentralization, data privacy, algorithmic bias, digital sovereignty',
+      ],
+    },
+    rubric: [
+      { name: 'Содержание и взаимодействие', max_points: 40, description: 'Качество аргументов, способность поддержать позицию, вовлечённость' },
+      { name: 'Использование языка', max_points: 40, description: 'Беглость, тематическая лексика, дискуссионные фразы' },
+      { name: 'Коммуникативные навыки', max_points: 20, description: 'Ясность, вежливость, умение слушать и отвечать' },
+    ],
+  },
+  {
+    id: 'dia-fintech-stand',
+    module: 'dialogue',
+    title: 'Ролевая игра: Стенд FinTech-компании на выставке',
+    instructions: 'Парная работа. Симуляция разговора на банковской технологической выставке: представитель FinTech-компании и ИТ-директор банка.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'At the FinTech Exhibition Stand: AI Credit Scoring Platform',
+      role: 'Student A (Stand Attendant — FinTech Representative) or Student B (Bank IT/Operations Manager)',
+      duration_min: 5,
+      required_vocab: ['AI credit scoring', 'accuracy rate', 'integration', 'data security', 'GDPR', 'implementation timeline', 'pilot project', 'proof of concept', 'scalable', 'to streamline', 'efficient', 'advantage'],
+      structure_hints: [
+        'Role A (FinTech Rep): Describe the AI credit scoring platform (key features, accuracy rates, integration capabilities) | Explain advantages over traditional scoring | Answer questions about price, security, implementation, support | Aim to "close the deal" with a pilot project proposal',
+        'Role B (Bank IT/Ops Manager): Ask about platform\'s key features and performance | Inquire about data security and compliance (GDPR / Russian 152-FZ) | Ask about implementation timeline and costs | Ask about pilot project terms',
+        'Use persuasive and technical language throughout',
+      ],
+    },
+    rubric: [
+      { name: 'Достижение цели роли', max_points: 40, description: 'Насколько эффективно каждый участник выполнил свою роль' },
+      { name: 'Язык и лексика', max_points: 30, description: 'Профессиональный и тематический язык, беглость' },
+      { name: 'Взаимодействие', max_points: 30, description: 'Реалистичность диалога, умение задавать и отвечать на вопросы, вежливость' },
+    ],
+  },
+  {
+    id: 'dia-crisis-suspicious',
+    module: 'dialogue',
+    title: 'Кризисный сценарий A: Подозрительная транзакция',
+    instructions: 'Группа (2–3 чел.) разбирает кризисный сценарий, готовит анализ и план действий, затем представляет решение.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Crisis Scenario: The Suspicious Transaction (25 million RUB cash deposit)',
+      duration_min: 10,
+      required_vocab: ['SAR (Suspicious Activity Report)', 'AML', 'KYC', 'compliance officer', 'FinMonitoring', 'Rosfinmonitoring', 'internal escalation', 'client relationship', 'cash deposit', 'business purpose'],
+      structure_hints: [
+        'Situation: A long-standing business client makes an unusually large cash deposit (25 million RUB) with no clear documented business purpose. The client says it is "proceeds from a one-time deal."',
+        'Discuss: Do you file a Suspicious Activity Report (SAR)? | How do you handle the client relationship? | Who do you notify internally? | What documentation do you request?',
+        'Reference correct AML/KYC procedures and Rosfinmonitoring reporting requirements',
+        'Present your group\'s analysis and proposed solution (10–15 min discussion, then presentation)',
+      ],
+    },
+    rubric: [
+      { name: 'Анализ рисков', max_points: 30, description: 'Оценка потенциальных последствий и регуляторных рисков' },
+      { name: 'Знание процедур', max_points: 30, description: 'Ссылки на корректные процедуры AML/KYC и нормы FinMonitoring' },
+      { name: 'Практичность решений', max_points: 25, description: 'Креативность и обоснованность предложенных решений' },
+      { name: 'Ясность презентации', max_points: 15, description: 'Ясность и связность групповой презентации' },
+    ],
+  },
+  {
+    id: 'dia-crisis-outage',
+    module: 'dialogue',
+    title: 'Кризисный сценарий B: Сбой системы в день выплаты зарплаты',
+    instructions: 'Группа (2–3 чел.) разбирает кризисный сценарий, готовит план действий, затем представляет решение.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Crisis Scenario: Core Banking System Crash on Payroll Day',
+      duration_min: 10,
+      required_vocab: ['contingency plan', 'core banking system', 'payroll', 'corporate clients', 'manual processing', 'regulatory obligation', 'CBR notification', 'critical system failure', 'communication strategy', 'business continuity'],
+      structure_hints: [
+        'Situation: The bank\'s core banking system crashes on the 25th of the month (the most common salary payment date). Thousands of corporate clients cannot process employee salary payments. Deadline: end of business day.',
+        'Discuss: What is the contingency plan? | How does the bank communicate with affected clients? | Can any transactions be processed manually? | What is the regulatory obligation for notifying the Central Bank of a critical system failure?',
+        'Consider: client communication templates, manual processing feasibility, CBR notification timelines, reputational risk management',
+        'Present your group\'s analysis and proposed solution',
+      ],
+    },
+    rubric: [
+      { name: 'Оценка и приоритизация рисков', max_points: 30, description: 'Правильная оценка критичности ситуации и приоритетов' },
+      { name: 'Реалистичность плана действий', max_points: 30, description: 'Практичность и выполнимость предложенного плана' },
+      { name: 'Регуляторная осведомлённость', max_points: 25, description: 'Знание требований ЦБ к уведомлению о критических сбоях' },
+      { name: 'Качество коммуникационной стратегии', max_points: 15, description: 'Ясность и профессионализм взаимодействия с клиентами' },
+    ],
+  },
+  {
+    id: 'dia-crisis-breach',
+    module: 'dialogue',
+    title: 'Кризисный сценарий C: Утечка персональных данных',
+    instructions: 'Группа (2–3 чел.) разбирает кризисный сценарий утечки данных, готовит план действий, затем представляет решение.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Crisis Scenario: Data Breach — 500 Client Records Sent to Wrong Email',
+      duration_min: 10,
+      required_vocab: ['personal data law (152-FZ)', 'data breach', 'Roskomnadzor', 'GDPR', 'passport data', 'credit card data', 'notification obligation', 'remediation', 'reputational risk', 'disciplinary action', 'data protection officer'],
+      structure_hints: [
+        'Situation: An employee accidentally sends an Excel file containing personal data of 500 clients (names, passport numbers, credit card numbers) to an unintended external email address.',
+        'Discuss: Assess the severity. | What are the legal consequences under Federal Law 152-FZ on Personal Data? | What is the notification obligation to Roskomnadzor and to affected clients? | What immediate containment steps are needed? | What are the internal HR consequences?',
+        'Consider: notification timelines, containment measures, client communication, prevention of future incidents, disciplinary procedures',
+        'Present your group\'s analysis and proposed solution',
+      ],
+    },
+    rubric: [
+      { name: 'Правовой анализ', max_points: 30, description: 'Точная оценка правовых последствий по 152-ФЗ' },
+      { name: 'Практичность мер реагирования', max_points: 30, description: 'Логичность и реалистичность плана устранения последствий' },
+      { name: 'Регуляторная осведомлённость', max_points: 25, description: 'Знание обязанностей по уведомлению регулятора и клиентов' },
+      { name: 'Ясность презентации', max_points: 15, description: 'Ясность и связность групповой презентации' },
+    ],
+  },
+  {
+    id: 'dia-failed-bank',
+    module: 'dialogue',
+    title: 'Кейс-стади: Анализ статьи о проблемном банке NovaCreditBank',
+    instructions: 'Прочитайте статью о NovaCreditBank и выполните письменный/устный анализ по четырём заданиям.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Case Study: The Decline of NovaCreditBank — Causes and Lessons',
+      duration_min: 15,
+      required_vocab: ['NPL ratio', 'NSFR (Net Stable Funding Ratio)', 'underwriting standards', 'loan loss provisions', 'liquidity', 'license revocation', 'Deposit Insurance Agency (DIA)', 'credit risk management', 'short-term deposits', 'long-term loans', 'structural mismatch'],
+      structure_hints: [
+        'Article summary: NovaCreditBank had its banking license revoked by the CBR. The bank funded long-term consumer loans (3–4 year terms) using short-term above-market deposits. NSFR was below minimum. NPL ratio deteriorated from 4.1% to 11.7% in five quarters. Management ignored early warning signals.',
+        'Task 1 — Identification of Causes: List the key internal factors that led to license revocation.',
+        'Task 2 — Financial Metrics: (a) What does NPL deterioration from 4.1% to 11.7% indicate? (b) Why was the funding strategy (short-term deposits → long-term loans) inherently risky? Link to NSFR.',
+        'Task 3 — Conditional Analysis: Write one Third Conditional (past mistake), one Second Conditional (advice for a similar bank today), one First Conditional (likely future consequence).',
+        'Task 4 — Recommendations: If hired 18 months before revocation, what two main recommendations would you make to the CEO? Use modal verbs: should have, ought to, must.',
+      ],
+    },
+    rubric: [
+      { name: 'Понимание и глубина анализа', max_points: 40, description: 'Точное выявление причин, верная интерпретация NPL, NSFR и провизий' },
+      { name: 'Использование терминологии', max_points: 30, description: 'Верное использование банковской лексики (NPL, провизии, ликвидность, NSFR)' },
+      { name: 'Грамматика и структура', max_points: 30, description: 'Точное использование условных предложений, модальных глаголов, формальный тон' },
+    ],
+  },
+  {
+    id: 'dia-corporate-finance',
+    module: 'dialogue',
+    title: 'Ролевая игра: Обсуждение вариантов финансирования корпоративного клиента',
+    instructions: 'Групповая ролевая игра. Банковская команда консультирует IndustrialGroup по вариантам привлечения 300 млн руб. для строительства нового завода.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Corporate Finance Advisory: Debt vs. Equity Financing Options',
+      role: 'Bank Relationship Manager / Credit Analyst / Investment Banking Advisor / Client CFO',
+      duration_min: 15,
+      required_vocab: ['equity financing', 'debt financing', 'cost of capital', 'leverage', 'debt covenant', 'dilution', 'free cash flow', 'ROI', 'cash flow', 'bond issue', 'private placement', 'IPO'],
+      structure_hints: [
+        'Bank Relationship Manager (Chairperson): Lead the discussion. Open: "Thank you for inviting us. We\'d like to walk you through three main financing options."',
+        'Bank Credit Analyst: Advocate for debt financing (long-term corporate loan or bond). Argue: stable cash flow supports repayments; retaining full ownership is valuable.',
+        'Investment Banking Advisor: Advocate for equity financing (private placement or IPO). Argue: strengthens balance sheet; avoids fixed debt repayments; attracts strategic investors.',
+        'Client CFO: Be pragmatic. Ask probing questions about cost (interest rate vs. equity dilution), covenants, timeline, flexibility, loss of control.',
+        'Use at least 8 vocabulary words. Use contrastive linkers: whereas, while, however. Aim for a recommended solution by the end.',
+      ],
+    },
+    rubric: [
+      { name: 'Профессиональная лексика', max_points: 30, description: 'Использование корпоративной финансовой терминологии' },
+      { name: 'Убедительность аргументов', max_points: 30, description: 'Ясность и убедительность аргументов каждой роли' },
+      { name: 'Сопоставление вариантов', max_points: 20, description: 'Использование контрастных связок, сравнение вариантов' },
+      { name: 'Активное участие', max_points: 20, description: 'Профессиональная коммуникация всех участников' },
+    ],
+  },
+  {
+    id: 'dia-financial-position',
+    module: 'dialogue',
+    title: 'Презентация + дискуссия: Как улучшить финансовое положение компании',
+    instructions: 'Презентация (3–4 мин) + групповая дискуссия/вопросы (5 мин). Выберите реальную или вымышленную компанию с финансовыми проблемами.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'How to Improve a Company\'s Financial Position',
+      duration_min: 3,
+      required_vocab: ['declining profit margins', 'high leverage', 'negative free cash flow', 'cost reduction', 'revenue enhancement', 'capital structure optimization', 'refinancing', 'strategic investor', 'non-core assets', 'debt-to-equity ratio'],
+      structure_hints: [
+        'Introduction (1 min): Describe the company and its main financial problems',
+        'Main Body (2 min): Propose 2–3 strategies: (a) cost reduction (renegotiate debt, sell non-core assets), (b) revenue enhancement (new markets, improved pricing), (c) capital structure optimization (refinance high-cost debt, attract strategic investor)',
+        'Conclusion (1 min): Summarize the plan and state the expected outcome for financial health',
+        'Group Discussion (5 min): Audience asks at least 3 challenging questions; presenter responds using professional vocabulary',
+        'Use at least 10 vocabulary words from corporate finance topics',
+      ],
+    },
+    rubric: [
+      { name: 'Содержание и лексика', max_points: 40, description: 'Релевантность и ясность стратегий, верное использование терминологии' },
+      { name: 'Структура и подача', max_points: 30, description: 'Чёткая структура, беглость, произношение, тайм-менеджмент' },
+      { name: 'Участие в дискуссии', max_points: 30, description: 'Убедительность ответов на вопросы аудитории' },
+    ],
+  },
+  {
+    id: 'dia-term-deposit',
+    module: 'dialogue',
+    title: 'Ролевая игра: Сравнение срочных вкладов двух банков',
+    instructions: 'Парная работа. Клиент Ольга (2 млн руб.) и финансовый советник сравнивают вклады StableBank и DigitalFirst.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Comparing Term Deposit Products: StableBank vs. DigitalFirst',
+      role: 'Financial Advisor or Client (Olga)',
+      duration_min: 5,
+      required_vocab: ['term deposit', 'interest rate', 'capitalization', 'compound interest', 'partial withdrawal', 'early termination', 'DIA insurance', 'effective annual yield', 'liquidity access', 'auto-renewal'],
+      structure_hints: [
+        'StableBank "Reliable Savings": 14.5% p.a. | 12 months | Min: 100,000 RUB | Capitalization: at maturity | No partial withdrawal | Early termination: 0.1% | DIA insured: Yes (up to 1.4M RUB per depositor)',
+        'DigitalFirst "Smart Deposit": 14.0% p.a. | 12 months (auto-renewal) | Min: 50,000 RUB | Capitalization: monthly (compound) | Partial withdrawal: up to 30% without rate change | Early termination: 2/3 of rate | DIA insured: Yes | Digital-only',
+        'Advisor: Explain monthly compounding at 14.0% produces higher effective yield than simple 14.5%. Highlight flexibility of DigitalFirst. Consider Olga\'s liquidity needs. Note that 2M exceeds DIA limit for a single bank.',
+        'Client (Olga): Ask about DIA coverage limit (note: 2M > 1.4M limit), interest calculation, early withdrawal penalties, digital-only access, which bank is safer.',
+      ],
+    },
+    rubric: [
+      { name: 'Точность информации о продуктах', max_points: 35, description: 'Верное описание условий вклада и DIA страхования' },
+      { name: 'Профессиональная лексика', max_points: 30, description: 'Верное использование банковской терминологии' },
+      { name: 'Коммуникативные и консультационные навыки', max_points: 35, description: 'Умение анализировать потребности клиента, сравнивать варианты, давать обоснованные рекомендации' },
+    ],
+  },
+  {
+    id: 'dia-letter-of-credit',
+    module: 'dialogue',
+    title: 'Ролевая игра: Консультация по аккредитиву для экспортёра',
+    instructions: 'Парная работа. MachineExport LLC впервые экспортирует оборудование в Казахстан на $500,000. Директор Сергей встречается со специалистом по торговому финансированию.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Trade Finance Consultation: Letter of Credit for Export to Kazakhstan',
+      role: 'Trade Finance Specialist or Client (Sergei, Director of MachineExport LLC)',
+      duration_min: 5,
+      required_vocab: ['letter of credit (L/C)', 'issuing bank', 'confirming bank', 'advising bank', 'shipping documents', 'discrepancy', 'irrevocable L/C', 'confirmed L/C', 'bank guarantee', 'advance payment', 'trade finance fee'],
+      structure_hints: [
+        'Specialist: Explain what an L/C is and how it protects MachineExport | Describe the L/C process: buyer\'s bank (Kazakhstan) issues → MachineExport\'s bank confirms → goods shipped → documents presented → bank pays | Explain types: irrevocable, confirmed (extra protection if Kazakh bank defaults) | Discuss fees (issuance, confirmation, document-processing) and timelines | Propose alternatives: bank guarantee or advance payment — compare pros and cons',
+        'Client (Sergei): Ask how payment is guaranteed | Ask what documents to present and what happens with minor document discrepancies | Ask about cost and whether fees can be passed to the buyer | Ask how long the whole process takes from L/C issuance to receiving funds',
+      ],
+    },
+    rubric: [
+      { name: 'Точность объяснения продукта', max_points: 35, description: 'Верное описание механизма аккредитива и защиты экспортёра' },
+      { name: 'Профессиональная лексика', max_points: 30, description: 'Точное использование терминологии торгового финансирования' },
+      { name: 'Консультационные навыки', max_points: 35, description: 'Умение анализировать потребности клиента, отвечать на вопросы профессионально' },
+    ],
+  },
+  {
+    id: 'dia-client-chooses',
+    module: 'dialogue',
+    title: 'Деловая игра: Клиент выбирает банк и услуги',
+    instructions: 'Групповая ролевая игра. Три клиента с разными потребностями консультируются у финансового советника на банковском форуме.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'A Client Chooses a Bank and Its Banking Services',
+      role: 'Bank Consultant / Financial Advisor (and rotating Client roles)',
+      duration_min: 15,
+      required_vocab: ['current account', 'wire transfer', 'business loan', 'online banking', 'fixed-term deposit', 'DIA insurance', 'OFZ bonds', 'letter of credit', 'FX conversion', 'trade finance', 'correspondent banking', 'fee', 'customer service'],
+      structure_hints: [
+        'Client 1 — Maria (small bakery, ~3M RUB monthly turnover): Needs current account, wire transfers, small business loan, online banking. Compare universal bank (Sberbank/VTB — full service, branch network) vs. neobank (Tochka, Modulbank — low fees, digital, fast account opening).',
+        'Client 2 — Alexei (saving 1.5M RUB for apartment in 2 years): Compare savings bank (fixed-term deposit, DIA-insured) vs. investment broker (OFZ bonds, equity mutual funds — higher potential return, market risk).',
+        'Client 3 — GlobalExport LLC (exporter to EU and China): Needs FX conversions, letters of credit, correspondent banking. Compare bank with strong international trade finance platform vs. purely domestic bank.',
+        'Advisor: provide balanced, client-focused advice for each; use relevant vocabulary; tailor advice to each client\'s specific needs',
+      ],
+    },
+    rubric: [
+      { name: 'Consultant: ясность и полнота совета', max_points: 35, description: 'Ясность совета, использование релевантной лексики, адаптация к потребностям клиента' },
+      { name: 'Client: релевантность вопросов', max_points: 25, description: 'Глубина и релевантность вопросов клиента' },
+      { name: 'Язык и лексика', max_points: 25, description: 'Естественность использования английского языка, банковская терминология' },
+      { name: 'Взаимодействие', max_points: 15, description: 'Качество диалога, достижение цели консультации' },
+    ],
+  },
+  {
+    id: 'dia-tax-audit',
+    module: 'dialogue',
+    title: 'Ролевая игра: Встреча с налоговым аудитором',
+    instructions: 'Парная работа. Встреча CFO банка «PrivatBank-Region» с внешним налоговым аудитором в рамках предварительного проверочного визита.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Pre-Audit Meeting: CFO and External Tax Auditor',
+      role: 'CFO of PrivatBank-Region or External Tax Auditor',
+      duration_min: 10,
+      required_vocab: ['profit tax', 'VAT exemption', 'deferred tax', 'withholding tax', 'deductible expenses', 'provisions', 'tax base', 'to file a return', 'compliance', 'non-deductible provisions', 'timing differences', 'cross-border payments'],
+      structure_hints: [
+        'Opening (2–3 min): Exchange greetings, state the purpose of the meeting',
+        'CFO Presentation (3–4 min): (a) Tax accounting & record-keeping: separate tax records, timing differences between accounting profit and taxable profit, deferred tax | (b) Key banking tax issues: non-deductibility of certain loan loss provisions for profit tax; VAT exemption for core banking services; withholding tax on cross-border payments to non-resident counterbanks | (c) Risk mitigation: use of tax advisors, staff training',
+        'Auditor Questions (3–4 min): "How do you distinguish deductible from non-deductible loan loss provisions?" | "How does the bank determine VAT-exempt vs. taxable services?" | "Describe your withholding tax compliance process for interest payments to non-resident counterbanks." | "Have you identified any areas of potential tax uncertainty in internal reviews?"',
+        'Conclusion (1–2 min): Summarize discussion, agree on next steps (document list, audit timeline)',
+      ],
+    },
+    rubric: [
+      { name: 'Содержание и профессиональные знания', max_points: 40, description: 'Точность и релевантность информации о банковских налоговых аспектах; глубина стратегий управления рисками' },
+      { name: 'Коммуникация и использование языка', max_points: 40, description: 'Беглость, ясность, уверенность; верное использование времён для описания процессов и намерений' },
+      { name: 'Выполнение задания и взаимодействие', max_points: 20, description: 'Оба участника остаются в роли; сбалансированный двусторонний обмен; структура встречи соблюдена' },
+    ],
+  },
+  {
+    id: 'dia-explain-banking',
+    module: 'dialogue',
+    title: 'Ролевая игра: Объяснение российской банковской системы иностранному инвестору',
+    instructions: 'Парная работа. Российский банковский эксперт из консалтинговой компании объясняет иностранному инвестору особенности российской банковской системы.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Explaining Russia\'s Banking System to a Foreign Investor',
+      role: 'Russian Banking Expert or Foreign Investor (European holding company)',
+      duration_min: 5,
+      required_vocab: ['two-tier banking system', 'CBR', 'state-owned bank', 'private bank', 'monetary policy', 'banking supervision', 'DIA (ASV)', 'capital adequacy (N1.0)', 'OFZ bonds', 'key interest rate', 'currency conversion', 'profit repatriation'],
+      structure_hints: [
+        'Expert covers: Structure of Russian banking system (two tiers: CBR + commercial banks, state-owned vs. private) | Role of CBR (monetary policy, supervision, key rate, FX interventions) | Deposit protection: DIA guarantees up to 1.4M RUB per depositor per bank | Key regulatory requirements (min capital, N1.0, liquidity ratios) | Key players: Sberbank, VTB, Gazprombank (state-owned) vs. Alfa-Bank, T-Bank (private)',
+        'Investor questions: "How stable is the Russian banking system?" | "Is my company\'s money protected if a Russian bank fails?" | "What is the current key interest rate?" | "What is the difference between a state-owned and private bank in Russia?" | "Are there restrictions on currency conversion and repatriation of profits?"',
+      ],
+    },
+    rubric: [
+      { name: 'Точность и ясность информации', max_points: 35, description: 'Точность предоставленной информации о банковской системе' },
+      { name: 'Профессиональная лексика', max_points: 30, description: 'Верное и уместное использование профессиональных терминов' },
+      { name: 'Инвестор: качество вопросов', max_points: 20, description: 'Релевантность и глубина вопросов иностранного инвестора' },
+      { name: 'Беглость и профессионализм', max_points: 15, description: 'Естественность взаимодействия, профессиональный тон' },
+    ],
+  },
+  {
+    id: 'dia-kpis-meeting',
+    module: 'dialogue',
+    title: 'Ролевая игра: Квартальное совещание по KPI — RegionBank',
+    instructions: 'Групповая ролевая игра (10–15 мин). Квартальное совещание по итогам в RegionBank: CFO, руководитель розницы, руководитель риск-менеджмента, CEO.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Quarterly KPI Review Meeting at RegionBank',
+      role: 'CFO (Presenter) / Head of Retail / Head of Risk Management / CEO (Moderator)',
+      duration_min: 10,
+      required_vocab: ['Net Interest Income', 'Cost-to-Income ratio', 'NPL ratio', 'Return on Equity (ROE)', 'capital adequacy', 'provisions', 'mortgage growth', 'new clients', 'profitability', 'action points'],
+      structure_hints: [
+        'CFO (Presenter): Present key KPIs — NII, Cost-to-Income ratio, NPL ratio, ROE, number of new clients. Use RegionBank data: NII 2.8B RUB, Total Revenue 4.1B RUB, NPL rose from 3.2% to 5.1%, retail lending +12%, mobile app has 340,000 active users.',
+        'Head of Retail (Questioner): Ask how retail mortgage growth contributed to revenue; propose new product ideas.',
+        'Head of Risk (Questioner): Ask about the deteriorating NPL ratio and what provisions have been made.',
+        'CEO (Moderator): Lead the meeting, ask strategic questions about profitability and capital adequacy, summarize action points.',
+        'Each participant must ask at least two relevant questions. After the role-play, each student submits a short paragraph from their character\'s perspective.',
+      ],
+    },
+    rubric: [
+      { name: 'Беглость и уместность профессионального английского', max_points: 30, description: 'Естественность и профессиональность речи' },
+      { name: 'Точность финансовых концепций', max_points: 30, description: 'Верное представление и обсуждение финансовых KPI' },
+      { name: 'Активное слушание и релевантность вопросов', max_points: 25, description: 'Качество вопросов и ответов каждого участника' },
+      { name: 'Достижение ролевых целей', max_points: 15, description: 'Насколько каждый участник выполнил задачи своей роли' },
+    ],
+  },
+  {
+    id: 'dia-investor-briefing',
+    module: 'dialogue',
+    title: 'Ролевая игра: Инвестиционный брифинг — RegionBank',
+    instructions: 'Парная работа. Финансовый аналитик RegionBank представляет ключевые результаты потенциальному инвестору, рассматривающему покупку миноритарной доли.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'The Investor Briefing: RegionBank PJSC Annual Results',
+      role: 'Financial Analyst (RegionBank) or Investor',
+      duration_min: 5,
+      required_vocab: ['Total Assets', 'Net Profit', 'NPL Ratio', 'Return on Equity (ROE)', 'Capital Adequacy Ratio (CAR)', 'provisions', 'asset quality', 'dividend policy', 'cost of capital', 'sector average'],
+      structure_hints: [
+        'RegionBank data: Total Assets 95B RUB (up from 82B) | Net Profit 3.2B RUB (up from 2.1B) | NPL Ratio 4.8% (up from 3.9%) | ROE 14.2% | CAR 12.1% (CBR minimum: 8%)',
+        'Analyst: Welcome the investor and state the purpose | Present 2–3 positive highlights (asset growth, profit growth, solid CAR) | Proactively address the rising NPL ratio and explain management\'s strategy | Conclude with a confident outlook',
+        'Investor follow-up questions: "The NPL ratio has risen — how confident are you that provisions are sufficient?" | "Your ROE is 14.2% — how does this compare to sector average and your cost of capital?" | "What is your dividend policy and when can investors expect a return?"',
+      ],
+    },
+    rubric: [
+      { name: 'Ясность и структура презентации', max_points: 35, description: 'Чёткость, структурированность и профессионализм изложения' },
+      { name: 'Использование банковской лексики', max_points: 30, description: 'Точное и эффективное использование финансовой терминологии (NPL, CAR, ROE, провизии)' },
+      { name: 'Убедительность нарратива', max_points: 20, description: 'Умение перевести цифры в убедительную бизнес-историю' },
+      { name: 'Работа с вопросами', max_points: 15, description: 'Уверенность и компетентность при ответах на вопросы инвестора' },
+    ],
+  },
+  {
+    id: 'dia-financial-advisor',
+    module: 'dialogue',
+    title: 'Ролевая игра: Финансовый советник для состоятельного клиента',
+    instructions: 'Парная работа. Финансовый советник банка консультирует клиента с 10 млн руб. по продуктам с разным уровнем риска и доходности.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Financial Advisory for a High-Net-Worth Client: 10 Million RUB Portfolio',
+      role: 'Financial Advisor or Client (concerned about risk)',
+      duration_min: 10,
+      required_vocab: ['deposit insurance (ASV/DIA)', 'OFZ bonds', 'equity risk', 'diversification', 'risk-return principle', 'inflation hedge', 'structured product', 'credit risk', 'market risk', 'liquidity risk', 'inflation risk', 'portfolio'],
+      structure_hints: [
+        'Advisor: Explain fundamental differences between key products (deposits, bonds, equity investments, structured products) | Explain associated risks (credit, market, liquidity, inflation) | Explain the risk-return trade-off | Propose a suitable balanced portfolio concept | Use modal verbs for advice: "You should...", "This might...", "You could consider..."',
+        'Client: Has 10M RUB from selling a business | Primary goal is safety, understands need for growth to protect against inflation | Ask many questions about risks, guarantees, expected returns | Use phrases: "I\'m particularly concerned about...", "Could you clarify...", "What happens if...?"',
+        'Discussion points: DIA insurance covers only up to 1.4M RUB | OFZ bond yields vs. inflation | Difference between mutual funds and direct equity investment | Structured products: what is the capital protection element?',
+      ],
+    },
+    rubric: [
+      { name: 'Профессиональные знания', max_points: 40, description: 'Точное объяснение ключевых концепций: DIA, ОФЗ, рынок акций, диверсификация, принцип риск/доходность' },
+      { name: 'Коммуникация и использование языка', max_points: 40, description: 'Беглость, эффективное использование модальных глаголов, профессиональный и эмпатичный тон' },
+      { name: 'Выполнение задания и взаимодействие', max_points: 20, description: 'Оба участника остаются в роли; диалог охватывает ключевые темы' },
+    ],
+  },
+  {
+    id: 'dia-digital-doc',
+    module: 'dialogue',
+    title: 'Презентация: Цифровая трансформация банковского документооборота',
+    instructions: 'Подготовьте и представьте структурированную презентацию (5–7 мин) об изменении роли банковских специалистов в условиях цифровой трансформации документооборота.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Digital Transformation of Bank Document Management',
+      duration_min: 5,
+      required_vocab: ['digital transformation', 'electronic document management (EDMS)', 'e-signature', 'KYC', 'optical character recognition (OCR)', 'cloud storage', 'data security', 'regulatory compliance', 'to automate', 'to streamline', 'paperless banking'],
+      structure_hints: [
+        'Content areas: What does digital transformation mean for bank document management (paper → EDMS)? | Specific changes: e-signatures, digital KYC, automated document routing for loans, digital archiving, paperless branches | Evolving role of banking professionals (from document handlers to digital process controllers and data analysts) | Opportunities (speed, accuracy, cost reduction, client convenience) AND challenges (cybersecurity, regulatory acceptance, staff training, legacy systems)',
+        'Structure: Introduction → Main Body → Conclusion. Use visual aids (PowerPoint slides).',
+        'Guiding questions: What does "paperless banking" mean in practice? | Which traditional document-intensive processes are being digitized? | What new digital skills are required? | What are the main regulatory and security challenges?',
+      ],
+    },
+    rubric: [
+      { name: 'Содержание и релевантность', max_points: 40, description: 'Ясное объяснение цифровой трансформации, конкретные примеры, анализ возможностей и вызовов, роль банковских специалистов' },
+      { name: 'Язык и лексика', max_points: 30, description: 'Верное и уместное использование тематической лексики, грамматическая точность, причастные конструкции' },
+      { name: 'Подача и слайды', max_points: 30, description: 'Эффективное использование наглядных материалов, зрительный контакт, уверенность, соблюдение регламента' },
+    ],
+  },
+  {
+    id: 'dia-edms-pitch',
+    module: 'dialogue',
+    title: 'Питч-презентация: Внедрение системы электронного документооборота (СЭД)',
+    instructions: 'Выступите в роли технологического консультанта. Подготовьте убедительный питч (3–4 мин) руководителю операционного блока банка для получения одобрения пилотного проекта СЭД.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Implementing an Electronic Document Management System (EDMS) in Our Bank',
+      duration_min: 3,
+      required_vocab: ['to pitch an idea', 'to boost productivity', 'to mitigate risks', 'proof of concept', 'ROI', 'to monitor performance', 'digital workflow', 'automated routing', 'document processing time', 'error reduction', 'upfront cost', 'data migration'],
+      structure_hints: [
+        'Opening: Capture attention with a statistic. E.g.: "Our bank currently processes 12,000 paper loan documents per month. Each takes 35 minutes to manually review."',
+        'Problem statement: Clearly identify the current inefficiency',
+        'Solution: Present your EDMS and how it works',
+        'Key arguments and benefits: E.g., "could reduce document processing time by 70%, reduce errors by 85%, save 40 staff hours per week"',
+        'Acknowledge and rebut concerns: upfront cost, data migration, staff training, CBR approval for e-signatures',
+        'Call to action: Request approval for a 3-month pilot in the mortgage department',
+      ],
+    },
+    rubric: [
+      { name: 'Убедительность и аргументация', max_points: 40, description: 'Ясность проблемы, сила аргументов, эффективное опровержение возражений, чёткий призыв к действию' },
+      { name: 'Язык и лексика', max_points: 30, description: 'Эффективное использование убедительного языка и питч-лексики, грамматические конструкции для усиления аргументов' },
+      { name: 'Подача и воздействие', max_points: 30, description: 'Уверенность, энтузиазм, темп, невербальная коммуникация, соблюдение регламента' },
+    ],
+  },
+  {
+    id: 'dia-pub-finance-pres',
+    module: 'dialogue',
+    title: 'Презентация + экспертная дискуссия: Проблемы и реформы государственных финансов России',
+    instructions: 'Подготовьте структурированную презентацию (4–5 мин) и участвуйте в экспертной дискуссии после.',
+    max_score: 100,
+    content: {
+      type: 'speaking',
+      topic: 'Key Problems and Reforms in Russia\'s Public Finances and Banking System',
+      duration_min: 4,
+      required_vocab: ['budget deficit', 'sovereign debt', 'monetary policy', 'banking supervision', 'key interest rate', 'fiscal consolidation', 'sanction-resistant infrastructure', 'financial stability', 'regulatory reform', 'state-owned bank', 'dependence on', 'reform of', 'investment in', 'revenue from', 'compliance with'],
+      structure_hints: [
+        'Introduction (1 min): State the topic\'s importance. Briefly outline main problems and reform directions.',
+        'Body Part 1 — Problems (1.5–2 min): Analyze 2–3 core challenges: (a) Budget dependence on oil and gas revenues ("Dutch disease" risk) | (b) Dominance of state-owned banks reducing competition and efficiency | (c) Impact of international sanctions on access to foreign capital markets and correspondent banking',
+        'Body Part 2 — Reforms (1.5–2 min): Explain key reform measures — banking sector cleanup by the CBR, development of domestic capital market, reduction of external financing dependency',
+        'Conclusion (1 min): Summarize the interconnected nature of problems and reforms. Brief outlook.',
+        'Expert Panel Discussion: "Which problem is most critical?" | "Has the CBR banking sector cleanup made the system safer or less competitive?" | "Long-term risks of state-owned bank dominance?"',
+        'Language: Use at least 10 vocabulary items. Pay attention to prepositions: dependence on, reform of, investment in, revenue from, compliance with.',
+      ],
+    },
+    rubric: [
+      { name: 'Презентация — содержание и структура', max_points: 30, description: 'Глубина анализа проблем и реформ, логичная структура' },
+      { name: 'Презентация — лексика и язык', max_points: 20, description: 'Верное использование тематической лексики, грамматика, предлоги' },
+      { name: 'Презентация — подача', max_points: 20, description: 'Беглость, произношение, уверенность' },
+      { name: 'Участие в экспертной дискуссии', max_points: 30, description: 'Умение ответить на вопросы аудитории, развить аргументы, взаимодействовать с другими участниками' },
     ],
   },
 ]
