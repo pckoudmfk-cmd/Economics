@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { useAuth } from '../lib/auth'
 import { EXERCISES, MODULE_LABELS } from '../lib/exercises-data'
 
 const MODULES = [
@@ -11,8 +10,6 @@ const MODULES = [
 ]
 
 export default function StudentDashboard() {
-  const { user } = useAuth()
-
   const countByModule = MODULES.reduce<Record<string, number>>((acc, m) => {
     acc[m.key] = EXERCISES.filter(e => e.module === m.key).length
     return acc
@@ -29,17 +26,10 @@ export default function StudentDashboard() {
     <div className="space-y-8">
       {/* Welcome */}
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">
-          {greeting}, {user?.full_name?.split(' ')[0] ?? 'студент'}!
-        </h2>
+        <h2 className="text-2xl font-bold text-slate-900">{greeting}!</h2>
         <p className="text-slate-500 mt-1">
           Добро пожаловать в интерактивный ФОС по английскому языку для банковского дела.
         </p>
-        {user?.group_name && (
-          <span className="mt-2 inline-block bg-blue-100 text-blue-700 text-xs px-2.5 py-1 rounded-full font-medium">
-            Группа {user.group_name}
-          </span>
-        )}
       </div>
 
       {/* Modules grid */}
@@ -57,7 +47,7 @@ export default function StudentDashboard() {
                 {MODULE_LABELS[m.key]}
               </div>
               <div className="text-sm text-slate-500 mt-1">
-                {countByModule[m.key]} {countByModule[m.key] === 1 ? 'задание' : 'задания'}
+                {countByModule[m.key]} {countByModule[m.key] === 1 ? 'задание' : 'заданий'}
               </div>
             </Link>
           ))}
@@ -70,7 +60,6 @@ export default function StudentDashboard() {
         <p className="text-blue-200 text-sm leading-relaxed">
           Этот курс охватывает все компоненты ФОС: грамматику, профессиональную лексику,
           устную речь (презентации и диалоги), письмо (деловые письма и эссе) и групповые дискуссии.
-          В разделе «Говорение» ваша речь распознаётся и оценивается автоматически.
         </p>
         <div className="mt-4 grid grid-cols-2 gap-3 text-center">
           <div className="bg-blue-800 rounded-lg py-3">
