@@ -1,0 +1,9 @@
+{
+  "name": "finance-quest-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "GFP Advisory Case Rotation — team quest with a teacher dashboard, backed by Firebase.",
+  "dependencies": {
+    "firebase-admin": "^12.6.0"
+  }
+}

@@ -1,0 +1,27 @@
+rules_version = '2';
+
+// Paste this into Firebase console → Firestore Database → Rules → Publish.
+//
+// Trust model:
+//   - Every visitor (student or teacher) is signed in anonymously the
+//     moment the page loads, so request.auth != null for anyone who opened
+//     the app at all.
+//   - A successful teacher PIN entry (checked server-side in
+//     /api/teacher-login.js) upgrades that session to a custom token
+//     carrying { role: "teacher" }, which is what request.auth.token.role
+//     checks below.
+//   - Any signed-in visitor who knows a team's code can read and update
+//     that team's document (join, answer questions, mark stations done,
+//     lock checked tasks) — the code itself is the shared secret, same as
+//     a real classroom handing out a code on the board.
+//   - Only a teacher session can create a new team code or delete a team.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /teams/{code} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.token.role == 'teacher';
+      allow update: if request.auth != null;
+      allow delete: if request.auth != null && request.auth.token.role == 'teacher';
+    }
+  }
+}
