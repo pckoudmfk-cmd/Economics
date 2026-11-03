@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Грамоты и дипломы МФК</title>
+<style>
+  @font-face { font-family: "Open Sans"; font-weight: 300 800; src: url(assets/fonts/OpenSans-cyr.woff2) format("woff2"); unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+  @font-face { font-family: "Open Sans"; font-weight: 300 800; src: url(assets/fonts/OpenSans-lat.woff2) format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122; }
+  @font-face { font-family: "Jost"; font-weight: 100 900; src: url(assets/fonts/Jost-cyr.woff2) format("woff2"); unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+  @font-face { font-family: "Jost"; font-weight: 100 900; src: url(assets/fonts/Jost-lat.woff2) format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122; }
+  @font-face { font-family: "Marck Script"; src: url(assets/fonts/MarckScript-cyr.woff2) format("woff2"); unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+  @font-face { font-family: "Marck Script"; src: url(assets/fonts/MarckScript-lat.woff2) format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122; }
+
+  :root {
+    /* 1 единица = 1 пиксель исходного скана шириной 1240 px */
+    --u: calc(210mm / 1240);
+    --teal: #2f7377;
+    --ink: #111;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #8a8f94; }
+  body { font-family: "Open Sans", sans-serif; color: var(--ink); }
+
+  .sheet {
+    position: relative;
+    width: 210mm; height: 297mm;
+    margin: 10mm auto;
+    background: #fff url(assets/background.png) center / 100% 100% no-repeat;
+    overflow: hidden;
+    box-shadow: 0 2mm 8mm rgba(0,0,0,.35);
+    page-break-after: always; break-after: page;
+  }
+  .sheet:last-child { page-break-after: auto; break-after: auto; }
+
+  /* ---------- смысловой блок (меняется) ---------- */
+  .content {
+    position: absolute;
+    left: calc(var(--u) * 110); right: calc(var(--u) * 110);
+    top: calc(var(--u) * 300); height: calc(var(--u) * 1030);
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    text-align: center;
+  }
+  .doc-type {
+    font-family: "Open Sans", sans-serif; font-weight: 600;
+    color: var(--teal);
+    font-size: calc(var(--u) * 120); line-height: 1; letter-spacing: calc(var(--u) * 2);
+    margin-top: calc(var(--u) * 10);
+  }
+  .degree {
+    font-family: "Open Sans", sans-serif; font-weight: 600; color: var(--teal);
+    font-size: calc(var(--u) * 44); margin-top: calc(var(--u) * 14);
+  }
+  .degree:empty { display: none; }
+  .lead {
+    font-family: "Marck Script", cursive; color: var(--teal);
+    font-size: calc(var(--u) * 52); margin-top: calc(var(--u) * 34);
+  }
+  .lead:empty { display: none; }
+  .name {
+    font-family: "Jost", sans-serif; font-weight: 600;
+    font-size: calc(var(--u) * 54); line-height: 1.15;
+    width: 100%; margin-top: calc(var(--u) * 46);
+    padding-bottom: calc(var(--u) * 10);
+    border-bottom: calc(var(--u) * 6) solid var(--ink);
+    min-height: calc(var(--u) * 80);
+  }
+  .role {
+    font-family: "Jost", sans-serif; font-weight: 500;
+    font-size: calc(var(--u) * 40); margin-top: calc(var(--u) * 26);
+  }
+  .role:empty { display: none; }
+  .org {
+    font-family: "Jost", sans-serif; font-weight: 500;
+    font-size: calc(var(--u) * 27); line-height: 1.45; margin-top: calc(var(--u) * 22);
+  }
+  .org:empty { display: none; }
+  .reason {
+    font-family: "Jost", sans-serif; font-weight: 600;
+    font-size: calc(var(--u) * 52); line-height: 1.32;
+    margin-top: calc(var(--u) * 50);
+  }
+  .reason b, .reason strong { font-weight: 600; }
+  .reason small { display: block; font-weight: 500; font-size: .62em; line-height: 1.4; margin-top: .5em; }
+
+  .motif {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    top: calc(var(--u) * 1035); width: calc(var(--u) * 440);
+    opacity: .16; pointer-events: none;
+  }
+  .no-motif .motif { display: none; }
+
+  /* ---------- подписант (не меняется) ---------- */
+  .signer {
+    position: absolute; left: 0; right: 0;
+    top: calc(var(--u) * 1345); height: calc(var(--u) * 140);
+    font-family: "Open Sans", sans-serif; font-weight: 700;
+    font-size: calc(var(--u) * 23.5); line-height: 1.42;
+  }
+  .signer .post { position: absolute; left: calc(var(--u) * 97); top: calc(var(--u) * 38); width: calc(var(--u) * 530); }
+  .signer .sig  { position: absolute; left: calc(var(--u) * 637); top: calc(var(--u) * 9); width: calc(var(--u) * 269); }
+  .signer .fio  { position: absolute; right: calc(var(--u) * 75); top: calc(var(--u) * 52); }
+
+  .date {
+    position: absolute; left: 0; right: 0; top: calc(var(--u) * 1553);
+    text-align: center; font-family: "Jost", sans-serif; font-weight: 500;
+    font-size: calc(var(--u) * 29);
+  }
+
+  /* режим правки в браузере */
+  [contenteditable]:hover { outline: 1px dashed rgba(47,115,119,.6); outline-offset: 2px; }
+  .toolbar {
+    position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; justify-content: center;
+    padding: 8px 16px; background: #23292e; color: #fff; font: 14px/1.4 "Open Sans", sans-serif;
+  }
+  .toolbar button { font: inherit; padding: 4px 14px; cursor: pointer; }
+  @media print {
+    html, body { background: none; }
+    .toolbar { display: none; }
+    .sheet { margin: 0; box-shadow: none; }
+    [contenteditable]:hover { outline: none; }
+  }
+  @media screen and (max-width: 820px) {
+    .sheet { zoom: calc(100vw / 220mm); }
+  }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <span>Текст на листе можно править щелчком мыши</span>
+  <button type="button" onclick="window.print()">Печать / PDF</button>
+</div>
+<main id="sheets"></main>
+
+<template id="sheet-tpl">
+  <section class="sheet">
+    <img class="motif" src="assets/savings-motif.svg" alt="">
+    <div class="content">
+      <div class="doc-type" data-f="docType" contenteditable></div>
+      <div class="degree"   data-f="degree"  contenteditable></div>
+      <div class="lead"     data-f="lead"    contenteditable></div>
+      <div class="name"     data-f="name"    contenteditable></div>
+      <div class="role"     data-f="role"    contenteditable></div>
+      <div class="org"      data-f="org"     contenteditable></div>
+      <div class="reason"   data-f="reason"  contenteditable></div>
+    </div>
+    <div class="signer">
+      <div class="post">Директор Московского финансового колледжа</div>
+      <img class="sig" src="assets/signature.png" alt="">
+      <div class="fio">А.Г. Хачатрян</div>
+    </div>
+    <div class="date" data-f="date" contenteditable></div>
+  </section>
+</template>
+
+<script>
+  // Значения по умолчанию; любое поле можно переопределить в common или в записи.
+  const DEFAULTS = {
+    docType: "ГРАМОТА",
+    degree: "",
+    lead: "Награждается",
+    name: "",
+    role: "студент группы ______",
+    org: "Московского финансового колледжа<br>Финансового университета при Правительстве РФ",
+    reason: "",
+    date: ""
+  };
+  // Поля, в которых разрешена простая разметка (<br>, <b>, <small>)
+  const HTML_FIELDS = new Set(["org", "reason", "name", "role", "degree"]);
+
+  function renderCertificates(data) {
+    const root = document.getElementById("sheets");
+    const tpl = document.getElementById("sheet-tpl");
+    root.innerHTML = "";
+    const items = (data.items && data.items.length) ? data.items : [{}];
+    for (const item of items) {
+      const v = Object.assign({}, DEFAULTS, data.common || {}, item);
+      const node = tpl.content.cloneNode(true);
+      if (v.motif === false) node.querySelector(".sheet").classList.add("no-motif");
+      node.querySelectorAll("[data-f]").forEach(el => {
+        const key = el.dataset.f, val = v[key] == null ? "" : String(v[key]);
+        if (HTML_FIELDS.has(key)) el.innerHTML = val; else el.textContent = val;
+      });
+      root.appendChild(node);
+    }
+    return document.fonts.ready.then(() => items.length);
+  }
+  window.renderCertificates = renderCertificates;
+
+  // Пример для открытия файла в браузере напрямую
+  if (!window.__NO_SAMPLE__) {
+    renderCertificates({
+      common: {
+        date: "31 октября 2026",
+        reason: "за победу в&nbsp;конкурсе на&nbsp;лучший цифровой постер на&nbsp;английском языке, посвящённый Дню сбережений"
+      },
+      items: [{ name: "Фамилия Имя Отчество", role: "студент группы ______" }]
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" fill="none">
+  <!-- мотив «сбережения»: растущие стопки монет, росток и стрелка роста -->
+  <g stroke="#2f7377" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 392 H560"/>
+    <!-- стопка 1 -->
+    <g>
+      <ellipse cx="120" cy="372" rx="62" ry="16"/>
+      <path d="M58 372 v-22 M182 372 v-22"/>
+      <ellipse cx="120" cy="350" rx="62" ry="16"/>
+      <path d="M58 350 v-22 M182 350 v-22"/>
+      <ellipse cx="120" cy="328" rx="62" ry="16"/>
+    </g>
+    <!-- стопка 2 -->
+    <g>
+      <ellipse cx="270" cy="372" rx="62" ry="16"/>
+      <path d="M208 372 v-22 M332 372 v-22"/>
+      <ellipse cx="270" cy="350" rx="62" ry="16"/>
+      <path d="M208 350 v-22 M332 350 v-22"/>
+      <ellipse cx="270" cy="328" rx="62" ry="16"/>
+      <path d="M208 328 v-22 M332 328 v-22"/>
+      <ellipse cx="270" cy="306" rx="62" ry="16"/>
+      <path d="M208 306 v-22 M332 306 v-22"/>
+      <ellipse cx="270" cy="284" rx="62" ry="16"/>
+    </g>
+    <!-- стопка 3 -->
+    <g>
+      <ellipse cx="420" cy="372" rx="62" ry="16"/>
+      <path d="M358 372 v-22 M482 372 v-22"/>
+      <ellipse cx="420" cy="350" rx="62" ry="16"/>
+      <path d="M358 350 v-22 M482 350 v-22"/>
+      <ellipse cx="420" cy="328" rx="62" ry="16"/>
+      <path d="M358 328 v-22 M482 328 v-22"/>
+      <ellipse cx="420" cy="306" rx="62" ry="16"/>
+      <path d="M358 306 v-22 M482 306 v-22"/>
+      <ellipse cx="420" cy="284" rx="62" ry="16"/>
+      <path d="M358 284 v-22 M482 284 v-22"/>
+      <ellipse cx="420" cy="262" rx="62" ry="16"/>
+      <path d="M358 262 v-22 M482 262 v-22"/>
+      <ellipse cx="420" cy="240" rx="62" ry="16"/>
+    </g>
+    <!-- росток на верхней монете -->
+    <path d="M420 240 C420 205 420 180 420 150"/>
+    <path d="M420 190 C390 190 362 170 358 138 C392 138 418 158 420 190 Z" fill="#2f7377" fill-opacity=".18"/>
+    <path d="M420 165 C446 165 474 146 480 112 C446 112 422 132 420 165 Z" fill="#2f7377" fill-opacity=".18"/>
+    <!-- стрелка роста -->
+    <path d="M70 250 C150 230 210 200 260 160 C300 128 330 96 360 60" stroke-dasharray="2 16"/>
+    <path d="M330 62 L362 56 L360 90"/>
+  </g>
+</svg>
