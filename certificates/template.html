@@ -90,6 +90,7 @@
     opacity: .16; pointer-events: none;
   }
   .no-motif .motif { display: none; }
+  .decor { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
   /* ---------- подписант (не меняется) ---------- */
   .signer {
@@ -154,6 +155,7 @@
   </section>
 </template>
 
+<script src="assets/decor.js"></script>
 <script>
   // Значения по умолчанию; любое поле можно переопределить в common или в записи.
   const DEFAULTS = {
@@ -177,7 +179,9 @@
     for (const item of items) {
       const v = Object.assign({}, DEFAULTS, data.common || {}, item);
       const node = tpl.content.cloneNode(true);
-      if (v.motif === false) node.querySelector(".sheet").classList.add("no-motif");
+      const sheet = node.querySelector(".sheet");
+      if (v.motif === false) sheet.classList.add("no-motif");
+      if (v.decor && window.buildDecor) sheet.insertAdjacentHTML("beforeend", window.buildDecor(v));
       node.querySelectorAll("[data-f]").forEach(el => {
         const key = el.dataset.f, val = v[key] == null ? "" : String(v[key]);
         if (HTML_FIELDS.has(key)) el.innerHTML = val; else el.textContent = val;
