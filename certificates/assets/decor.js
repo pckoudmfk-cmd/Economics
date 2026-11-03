@@ -62,9 +62,9 @@
       <circle cx="${cx}" cy="${cy}" r="${f(r * .74)}" fill="${TEAL}"/>
       <circle cx="${cx}" cy="${cy}" r="${f(r * .66)}" fill="none" stroke="${GOLD_L}" stroke-width="2"/>
       <text x="${cx}" y="${f(cy + (small ? r * .06 : r * .14))}" text-anchor="middle" font-family="Jost" font-weight="600"
-            font-size="${f(big.length > 6 ? r * .30 : r * .44)}" fill="#fff">${big}</text>
+            font-size="${f(Math.min(r * .44, r * 1.05 / (big.length * .62)))}" fill="#fff">${big}</text>
       ${small ? `<text x="${cx}" y="${f(cy + r * .36)}" text-anchor="middle" font-family="Open Sans" font-weight="700"
-            font-size="${f(r * .15)}" letter-spacing="${f(r * .02)}" fill="${GOLD_L}">${small}</text>` : ""}
+            font-size="${f(Math.min(r * .15, r * 1.0 / (small.length * .78)))}" letter-spacing="${f(r * .02)}" fill="${GOLD_L}">${small}</text>` : ""}
     </g>`;
   }
 
